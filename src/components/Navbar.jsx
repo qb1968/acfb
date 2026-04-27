@@ -54,17 +54,14 @@ export default function Navbar() {
             <NavLink to="/contact" className={navClass}>
               Contact
             </NavLink>
-            
-              <Link
-  to="/membership"
-  onClick={() => setOpen(false)}
-  className="bg-accent text-primary px-5 py-3 rounded-full font-semibold text-center"
->
-  Join Today
-</Link>
-              
-            
-            
+
+            <Link
+              to="/membership"
+              onClick={() => setOpen(false)}
+              className="bg-accent text-primary px-5 py-3 rounded-full font-semibold text-center"
+            >
+              Join Today
+            </Link>
           </div>
 
           {/* Mobile Toggle */}
@@ -83,22 +80,37 @@ export default function Navbar() {
           }`}
         >
           <div className="px-6 pb-6 flex flex-col gap-4 bg-white shadow-inner">
-            <NavLink to="/" className="text-primary font-medium">
+            <NavLink
+              to="/"
+              className="text-primary font-medium"
+              onClick={() => setOpen(false)}
+            >
               Home
             </NavLink>
-            <NavLink to="/about" className="text-primary font-medium">
+
+            <NavLink
+              to="/about"
+              className="text-primary font-medium"
+              onClick={() => setOpen(false)}
+            >
               About
             </NavLink>
-            <NavLink to="/contact" className="text-primary font-medium">
+
+            <NavLink
+              to="/contact"
+              className="text-primary font-medium"
+              onClick={() => setOpen(false)}
+            >
               Contact
             </NavLink>
+
+            {/* ✅ FIXED JOIN TODAY BUTTON */}
             <Link
               to="/membership"
-              className="bg-accent text-primary px-5 py-2 rounded-full font-semibold hover:scale-105 transition-transform"
+              onClick={() => setOpen(false)}
+              className="bg-accent text-primary px-5 py-3 rounded-full font-semibold text-center block"
             >
-              {/* <button className="bg-accent text-primary px-5 py-3 rounded-full font-semibold">
               Join Today
-            </button> */}
             </Link>
           </div>
         </div>

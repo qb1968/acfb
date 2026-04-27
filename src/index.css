@@ -3,5 +3,9 @@
 @tailwind utilities;
 
 body {
-  @apply font-sans bg-gray-50 text-gray-800;
+  @apply bg-gray-50 text-gray-800 font-sans;
+}
+
+.container {
+  @apply max-w-7xl mx-auto px-6 sm:px-8 lg:px-12;
 }
