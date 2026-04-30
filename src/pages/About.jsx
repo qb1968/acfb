@@ -5,11 +5,20 @@ export default function Home() {
     <div>
       <Hero />
 
-      <section className="max-w-5xl mx-auto p-6">
-        <h2 className="text-2xl font-bold mb-4">Our Mission</h2>
-        <p>
-          We support agricultural development, education, and the economic well-being
-          of farming communities.
+      <section className="max-w-5xl mx-auto p-6 md:p-10">
+        <h2 className="text-2xl md:text-3xl font-bold mb-4 text-primary">
+          Our Mission
+        </h2>
+
+        <p className="text-gray-700 leading-relaxed text-lg">
+          Our mission is to strengthen and support the agricultural community by
+          promoting education, advocacy, and sustainable growth for farmers and
+          rural families. We are committed to preserving the values of hard
+          work, stewardship, and community service while providing resources
+          that help agriculture thrive in an ever-changing world. Through
+          membership, partnerships, and outreach, we aim to create opportunities
+          that enhance economic well-being, protect rural livelihoods, and
+          inspire future generations to value and sustain our farming heritage.
         </p>
       </section>
 

@@ -51,6 +51,9 @@ export default function Navbar() {
             <NavLink to="/about" className={navClass}>
               About
             </NavLink>
+            <NavLink to="/gallery" className={navClass}>
+              Gallery
+            </NavLink>
             <NavLink to="/contact" className={navClass}>
               Contact
             </NavLink>
