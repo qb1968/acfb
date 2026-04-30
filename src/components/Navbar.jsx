@@ -98,6 +98,13 @@ export default function Navbar() {
             >
               About
             </NavLink>
+            <NavLink
+              to="/gallery"
+              className="text-primary font-medium"
+              onClick={() => setOpen(false)}
+            >
+              Gallery
+            </NavLink>
 
             <NavLink
               to="/contact"
