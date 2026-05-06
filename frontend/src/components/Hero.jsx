@@ -11,11 +11,7 @@ export default function Hero() {
             Supporting Agriculture & Community
           </h1>
 
-          <p className="text-sm sm:text-base lg:text-lg text-gray-100 leading-relaxed">
-            Welcome to the Alamance County Farm Bureau. We are committed to
-            supporting farmers, strengthening rural communities, and providing
-            valuable resources for our members across North Carolina.
-          </p>
+         
         </div>
       </div>
     </section>

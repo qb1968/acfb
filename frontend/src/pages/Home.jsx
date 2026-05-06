@@ -86,7 +86,7 @@ export default function Home() {
       {/* HERO */}
       <section className="relative bg-[url('/farm.png')] bg-cover bg-center h-[85vh] flex items-center">
         {/* Overlay */}
-        <div className="absolute inset-0 bg-black/85"></div>
+        <div className="absolute inset-0 bg-black/70"></div>
 
         {/* Content */}
         <div className="relative z-10 max-w-6xl mx-auto px-6 text-white">
@@ -95,10 +95,9 @@ export default function Home() {
           </h1>
 
           <p className="max-w-2xl text-gray-200 text-lg mb-6">
-            Welcome to
-            the Alamance County Farm Bureau website. We hope you find our site
-            useful and informative. We provide resources, membership benefits,
-            and agricultural support for North Carolina residents.
+            Welcome to the Alamance County Farm Bureau. We are committed to
+            supporting farmers, strengthening rural communities, and providing
+            valuable resources for our members across North Carolina.
           </p>
 
           <div className="flex gap-4 flex-wrap">
