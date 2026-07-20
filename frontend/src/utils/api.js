@@ -1,4 +1,4 @@
-const API_URL = "http://localhost:5000/api";
+const API_URL = "https://acfb.onrender.com/api";
 
 export const api = async (endpoint, method = "GET", body) => {
   const token = localStorage.getItem("token");

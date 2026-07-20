@@ -8,7 +8,7 @@ export default function HomeEventsCard() {
   useEffect(() => {
     const fetchEvents = async () => {
       try {
-        const res = await axios.get("http://localhost:5000/api/events");
+        const res = await axios.get("https://acfb.onrender.com/api/events");
 
         const upcoming = res.data
           .filter((event) => new Date(event.date) >= new Date())

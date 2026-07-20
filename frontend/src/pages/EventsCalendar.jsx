@@ -18,7 +18,7 @@ export default function EventsCalendar() {
 
   const fetchEvents = async () => {
     try {
-      const res = await axios.get("http://localhost:5000/api/events");
+      const res = await axios.get("https://acfb.onrender.com/api/events");
 
       setEvents(res.data);
     } catch (err) {
@@ -128,7 +128,7 @@ export default function EventsCalendar() {
 
             {selectedEvent.extendedProps.image && (
               <img
-                src={`http://localhost:5000${
+                src={`https://acfb.onrender.com${
                   selectedEvent.extendedProps.image
                 }`}
                 alt=""

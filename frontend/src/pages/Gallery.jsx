@@ -23,7 +23,7 @@ export default function Gallery() {
 
   async function fetchGallery() {
     try {
-      const res = await axios.get("http://localhost:5000/api/gallery");
+      const res = await axios.get("https://acfb.onrender.com/api/gallery");
       setGalleryImages(res.data);
     } catch (err) {
       console.error("Failed to load gallery images:", err);
@@ -75,13 +75,13 @@ export default function Gallery() {
           {galleryImages.map((image) => (
             <a
               key={image._id}
-              href={`http://localhost:5000${image.image}`}
+              href={`https://acfb.onrender.com${image.image}`}
               target="_blank"
               rel="noopener noreferrer"
               className="group relative overflow-hidden rounded-2xl shadow-md bg-white block"
             >
               <img
-                src={`http://localhost:5000${image.image}`}
+                src={`https://acfb.onrender.com${image.image}`}
                 alt="Gallery Upload"
                 className="w-full h-72 object-cover transform group-hover:scale-110 transition duration-500"
               />

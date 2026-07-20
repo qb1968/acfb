@@ -13,7 +13,7 @@ export default function GalleryAdmin() {
 
   const fetchImages = async () => {
     try {
-      const res = await axios.get("http://localhost:5000/api/gallery");
+      const res = await axios.get("https://acfb.onrender.com/api/gallery");
       setImages(res.data);
     } catch (err) {
       console.error(err);
@@ -32,7 +32,7 @@ export default function GalleryAdmin() {
     formData.append("image", file);
 
     try {
-      await axios.post("http://localhost:5000/api/gallery", formData);
+      await axios.post("https://acfb.onrender.com/api/gallery", formData);
 
       alert("Image uploaded!");
 
@@ -49,7 +49,7 @@ export default function GalleryAdmin() {
     if (!window.confirm("Delete this image?")) return;
 
     try {
-      await axios.delete(`http://localhost:5000/api/gallery/${id}`);
+      await axios.delete(`https://acfb.onrender.com/api/gallery/${id}`);
 
       // Refresh gallery
       fetchImages();
@@ -111,7 +111,7 @@ export default function GalleryAdmin() {
                 className="bg-white rounded-2xl shadow-lg overflow-hidden"
               >
                 <img
-                  src={`http://localhost:5000${img.image}`}
+                  src={`https://acfb.onrender.com${img.image}`}
                   alt="Gallery"
                   className="w-full h-56 object-cover"
                 />

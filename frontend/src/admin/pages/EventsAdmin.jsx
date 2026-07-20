@@ -23,7 +23,7 @@ export default function EventsAdmin() {
 
   const fetchEvents = async () => {
     try {
-      const res = await axios.get("http://localhost:5000/api/events");
+      const res = await axios.get("https://acfb.onrender.com/api/events");
 
       setEvents(res.data);
     } catch (err) {
@@ -53,13 +53,13 @@ export default function EventsAdmin() {
     try {
       if (editingId) {
         await axios.put(
-          `http://localhost:5000/api/events/${editingId}`,
+          `https://acfb.onrender.com/api/events/${editingId}`,
           formData,
         );
 
         alert("Event Updated!");
       } else {
-        await axios.post("http://localhost:5000/api/events", formData);
+        await axios.post("https://acfb.onrender.com/api/events", formData);
 
         alert("Event Created!");
       }
@@ -93,7 +93,7 @@ export default function EventsAdmin() {
     }
 
     try {
-      await axios.delete(`http://localhost:5000/api/events/${id}`);
+      await axios.delete(`https://acfb.onrender.com/api/events/${id}`);
 
       alert("Event Deleted");
 
@@ -225,7 +225,7 @@ export default function EventsAdmin() {
               <div>
                 {event.image && (
                   <img
-                    src={`http://localhost:5000${event.image}`}
+                    src={`https://acfb.onrender.com${event.image}`}
                     alt=""
                     className="w-32 h-20 object-cover rounded-lg mb-3"
                   />
