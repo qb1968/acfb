@@ -16,7 +16,7 @@ const app = express();
 // Middleware
 app.use(
   cors({
-    origin: ["http://localhost:5173", "https://your-frontend-url.onrender.com"],
+    origin: ["http://localhost:5173", "https://acfb-three.vercel.app"],
     credentials: true,
   }),
 );
