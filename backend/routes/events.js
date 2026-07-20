@@ -1,22 +1,25 @@
 import express from "express";
 import Event from "../models/Event.js";
-import auth from "../middleware/auth.js";
 
 const router = express.Router();
 
+// GET EVENTS
 router.get("/", async (req, res) => {
-  res.json(await Event.find());
+  const events = await Event.find();
+  res.json(events);
 });
 
-router.post("/", auth, async (req, res) => {
-  const event = new Event(req.body);
-  await event.save();
-  res.json(event);
-});
+// CREATE EVENT
+router.post("/", async (req, res) => {
+  try {
+    const event = new Event(req.body);
 
-router.delete("/:id", auth, async (req, res) => {
-  await Event.findByIdAndDelete(req.params.id);
-  res.json("Deleted");
+    await event.save();
+
+    res.json(event);
+  } catch (err) {
+    res.status(500).json({ message: err.message });
+  }
 });
 
 export default router;

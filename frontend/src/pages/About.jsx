@@ -23,10 +23,10 @@ export default function Home() {
         </p>
       </section>
 
-      <section className="bg-white py-10">
+      {/* <section className="bg-white py-10">
         <div className="max-w-5xl mx-auto px-6">
           <div className="grid md:grid-cols-2 gap-6 place-items-center">
-            {/* MEMBERSHIP */}
+            
             <Link
               to="/membership"
               className="shadow p-6 rounded-xl text-center w-full hover:shadow-xl transition block"
@@ -35,7 +35,7 @@ export default function Home() {
               <p>Join and support local agriculture.</p>
             </Link>
 
-            {/* COMMUNITY */}
+          
             <Link
               to="/community"
               className="shadow p-6 rounded-xl text-center w-full hover:shadow-xl transition block"
@@ -45,6 +45,21 @@ export default function Home() {
             </Link>
           </div>
         </div>
+      </section> */}
+      <section className="bg-primary text-white py-14 text-center">
+        <h2 className="text-3xl font-bold mb-4">Join the Farm Bureau Today</h2>
+
+        <p className="max-w-xl mx-auto text-gray-200 mb-6">
+          Become part of a strong agricultural community dedicated to supporting
+          farmers and rural families.
+        </p>
+
+        <Link
+          to="/membership"
+          className="bg-accent text-primary px-8 py-3 rounded-full font-semibold hover:scale-105 transition"
+        >
+          Get Started
+        </Link>
       </section>
     </div>
   );

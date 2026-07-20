@@ -1,66 +1,142 @@
-import { useState } from "react";
+import { useEffect, useState } from "react";
+import axios from "axios";
+
+import FullCalendar from "@fullcalendar/react";
+import dayGridPlugin from "@fullcalendar/daygrid";
+import timeGridPlugin from "@fullcalendar/timegrid";
+import interactionPlugin from "@fullcalendar/interaction";
+
+
 
 export default function EventsCalendar() {
-  const [currentMonth] = useState("April 2026");
+  const [events, setEvents] = useState([]);
+  const [selectedEvent, setSelectedEvent] = useState(null);
 
-  // Example events (you can expand later)
-  const events = {
-    3: ["Farm Workshop"],
-    8: ["Board Meeting"],
-    12: ["Youth Training"],
-    18: ["Community Fair"],
-    25: ["Harvest Prep"],
+  useEffect(() => {
+    fetchEvents();
+  }, []);
+
+  const fetchEvents = async () => {
+    try {
+      const res = await axios.get("http://localhost:5000/api/events");
+
+      setEvents(res.data);
+    } catch (err) {
+      console.error(err);
+    }
   };
 
-  const days = Array.from({ length: 30 }, (_, i) => i + 1);
+  // Convert MongoDB events to FullCalendar format
+
+  const calendarEvents = events.map((event) => ({
+    id: event._id,
+
+    title: event.title,
+
+    start: event.date,
+
+    extendedProps: {
+      description: event.description,
+
+      location: event.location,
+
+      startTime: event.startTime,
+
+      endTime: event.endTime,
+
+      category: event.category,
+
+      image: event.image,
+    },
+
+    // CATEGORY COLORS
+
+    backgroundColor:
+      event.category === "Meeting"
+        ? "#2563eb"
+        : event.category === "Youth Program"
+          ? "#16a34a"
+          : event.category === "Training"
+            ? "#f97316"
+            : "#7c3aed",
+  }));
+
+  // When event clicked
+
+  const handleEventClick = (info) => {
+    setSelectedEvent(info.event);
+  };
 
   return (
-    <div className="bg-gray-50 min-h-screen">
-      {/* HEADER */}
-      <div className="bg-primary text-white py-10 text-center">
-        <h1 className="text-3xl md:text-4xl font-bold">
-          Upcoming Events Calendar
-        </h1>
-        <p className="text-gray-200 mt-2">{currentMonth}</p>
-      </div>
+    <div className="bg-gray-50 min-h-screen py-12 px-6">
+      <div className="max-w-7xl mx-auto">
+        <div className="text-center mb-10">
+          <h1 className="text-4xl font-bold text-primary">Events Calendar</h1>
 
-      {/* CALENDAR GRID */}
-      <div className="max-w-6xl mx-auto px-6 py-10">
-        {/* Days of week */}
-        <div className="grid grid-cols-7 text-center font-semibold text-gray-600 mb-2">
-          <div>Sun</div>
-          <div>Mon</div>
-          <div>Tue</div>
-          <div>Wed</div>
-          <div>Thu</div>
-          <div>Fri</div>
-          <div>Sat</div>
+          <p className="text-gray-600 mt-2">
+            View upcoming Farm Bureau events and programs.
+          </p>
         </div>
 
-        {/* Calendar grid */}
-        <div className="grid grid-cols-7 gap-2">
-          {days.map((day) => (
-            <div
-              key={day}
-              className="bg-white border rounded-xl p-2 h-24 md:h-28 flex flex-col justify-between hover:shadow-md transition"
+        {/* CALENDAR */}
+
+        <div className="bg-white rounded-2xl shadow-lg p-6">
+          <FullCalendar
+            plugins={[dayGridPlugin, timeGridPlugin, interactionPlugin]}
+            initialView="dayGridMonth"
+            headerToolbar={{
+              left: "prev,next today",
+
+              center: "title",
+
+              right: "dayGridMonth,timeGridWeek",
+            }}
+            events={calendarEvents}
+            eventClick={handleEventClick}
+            height="auto"
+          />
+        </div>
+
+        {/* EVENT DETAILS */}
+
+        {selectedEvent && (
+          <div className="mt-8 bg-white rounded-2xl shadow-lg p-6">
+            <button
+              onClick={() => setSelectedEvent(null)}
+              className="float-right text-gray-500"
             >
-              {/* Day number */}
-              <span className="text-sm font-bold text-gray-700">{day}</span>
+              ✕
+            </button>
 
-              {/* Events */}
-              <div className="text-xs space-y-1">
-                {events[day]?.map((event, idx) => (
-                  <div
-                    key={idx}
-                    className="bg-accent text-primary px-2 py-1 rounded-full text-[10px] font-semibold truncate"
-                  >
-                    {event}
-                  </div>
-                ))}
-              </div>
-            </div>
-          ))}
-        </div>
+            <h2 className="text-2xl font-bold text-primary">
+              {selectedEvent.title}
+            </h2>
+
+            <p className="mt-3">📍 {selectedEvent.extendedProps.location}</p>
+
+            <p>
+              ⏰ {selectedEvent.extendedProps.startTime}
+              {" - "}
+              {selectedEvent.extendedProps.endTime}
+            </p>
+
+            <p>🏷 {selectedEvent.extendedProps.category}</p>
+
+            <p className="mt-4 text-gray-600">
+              {selectedEvent.extendedProps.description}
+            </p>
+
+            {selectedEvent.extendedProps.image && (
+              <img
+                src={`http://localhost:5000${
+                  selectedEvent.extendedProps.image
+                }`}
+                alt=""
+                className="mt-5 rounded-xl max-w-lg"
+              />
+            )}
+          </div>
+        )}
       </div>
     </div>
   );

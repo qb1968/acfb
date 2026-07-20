@@ -40,12 +40,13 @@ import Membership from "./components/Membership";
 import EventsCalendar from "./pages/EventsCalendar";
 import Gallery from "./pages/Gallery";
 import Community from "./pages/Community";
-
+import Officers from "./pages/Officers";
 /* ADMIN */
 import Login from "./admin/pages/Login";
 import AdminLayout from "./admin/AdminLayout";
 import EventsAdmin from "./admin/pages/EventsAdmin";
 import GalleryAdmin from "./admin/pages/GalleryAdmin";
+
 import NewsAdmin from "./admin/pages/NewsAdmin";
 import ProtectedRoute from "./admin/ProtectedRoute";
 
@@ -114,10 +115,16 @@ export default function App() {
         path="/community"
         element={
           <Page>
-          <Community />
+            <Community />
           </Page>
         }
       />
+
+      <Route path="/officers" element={
+        <Page>
+          <Officers />
+        </Page>
+      } />
 
       {/* ADMIN LOGIN */}
       <Route path="/admin/login" element={<Login />} />

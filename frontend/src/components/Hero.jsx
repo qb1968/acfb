@@ -1,6 +1,6 @@
 export default function Hero() {
   return (
-    <section className="relative h-[60vh] flex items-center bg-[url('/farm.png')] bg-cover bg-center">
+    <section className="relative h-[25vh] flex items-center bg-[url('/farm.png')] bg-cover bg-center">
       {/* Overlay */}
       <div className="absolute inset-0 bg-black/80"></div>
 

@@ -54,6 +54,9 @@ export default function Navbar() {
             <NavLink to="/gallery" className={navClass}>
               Gallery
             </NavLink>
+            <NavLink to="/officers" className={navClass}>
+              Officers
+            </NavLink>
             <NavLink to="/contact" className={navClass}>
               Contact
             </NavLink>
@@ -104,6 +107,13 @@ export default function Navbar() {
               onClick={() => setOpen(false)}
             >
               Gallery
+            </NavLink>
+            <NavLink
+              to="/officers"
+              className="text-primary font-medium"
+              onClick={() => setOpen(false)}
+            >
+              Officers
             </NavLink>
 
             <NavLink
