@@ -6,8 +6,6 @@ import dayGridPlugin from "@fullcalendar/daygrid";
 import timeGridPlugin from "@fullcalendar/timegrid";
 import interactionPlugin from "@fullcalendar/interaction";
 
-
-
 export default function EventsCalendar() {
   const [events, setEvents] = useState([]);
   const [selectedEvent, setSelectedEvent] = useState(null);
@@ -22,11 +20,11 @@ export default function EventsCalendar() {
 
       setEvents(res.data);
     } catch (err) {
-      console.error(err);
+      console.error("Error loading events:", err);
     }
   };
 
-  // Convert MongoDB events to FullCalendar format
+  // Convert database events for FullCalendar
 
   const calendarEvents = events.map((event) => ({
     id: event._id,
@@ -61,7 +59,7 @@ export default function EventsCalendar() {
             : "#7c3aed",
   }));
 
-  // When event clicked
+  // Calendar event clicked
 
   const handleEventClick = (info) => {
     setSelectedEvent(info.event);
@@ -70,6 +68,8 @@ export default function EventsCalendar() {
   return (
     <div className="bg-gray-50 min-h-screen py-12 px-6">
       <div className="max-w-7xl mx-auto">
+        {/* HEADER */}
+
         <div className="text-center mb-10">
           <h1 className="text-4xl font-bold text-primary">Events Calendar</h1>
 
@@ -97,44 +97,73 @@ export default function EventsCalendar() {
           />
         </div>
 
-        {/* EVENT DETAILS */}
+        {/* EVENT POPUP MODAL */}
 
         {selectedEvent && (
-          <div className="mt-8 bg-white rounded-2xl shadow-lg p-6">
-            <button
-              onClick={() => setSelectedEvent(null)}
-              className="float-right text-gray-500"
+          <div
+            className="fixed inset-0 z-50 flex items-center justify-center bg-black/70 px-4"
+            onClick={() => setSelectedEvent(null)}
+          >
+            <div
+              className="bg-white rounded-2xl shadow-2xl max-w-lg w-full p-6 relative"
+              onClick={(e) => e.stopPropagation()}
             >
-              ✕
-            </button>
+              {/* CLOSE BUTTON */}
 
-            <h2 className="text-2xl font-bold text-primary">
-              {selectedEvent.title}
-            </h2>
+              <button
+                onClick={() => setSelectedEvent(null)}
+                className="absolute top-4 right-4 text-gray-500 hover:text-black text-xl"
+              >
+                ✕
+              </button>
 
-            <p className="mt-3">📍 {selectedEvent.extendedProps.location}</p>
+              {/* TITLE */}
 
-            <p>
-              ⏰ {selectedEvent.extendedProps.startTime}
-              {" - "}
-              {selectedEvent.extendedProps.endTime}
-            </p>
+              <h2 className="text-2xl font-bold text-primary pr-8">
+                {selectedEvent.title}
+              </h2>
 
-            <p>🏷 {selectedEvent.extendedProps.category}</p>
+              {/* EVENT INFORMATION */}
 
-            <p className="mt-4 text-gray-600">
-              {selectedEvent.extendedProps.description}
-            </p>
+              <div className="mt-5 space-y-3 text-gray-700">
+                {selectedEvent.extendedProps.location && (
+                  <p>
+                    📍 <strong>Location:</strong>{" "}
+                    {selectedEvent.extendedProps.location}
+                  </p>
+                )}
 
-            {selectedEvent.extendedProps.image && (
-              <img
-                src={`https://acfb.onrender.com${
-                  selectedEvent.extendedProps.image
-                }`}
-                alt=""
-                className="mt-5 rounded-xl max-w-lg"
-              />
-            )}
+                {selectedEvent.extendedProps.startTime && (
+                  <p>
+                    ⏰ <strong>Time:</strong>{" "}
+                    {selectedEvent.extendedProps.startTime}
+                    {" - "}
+                    {selectedEvent.extendedProps.endTime}
+                  </p>
+                )}
+
+                {selectedEvent.extendedProps.category && (
+                  <p>
+                    🏷 <strong>Category:</strong>{" "}
+                    {selectedEvent.extendedProps.category}
+                  </p>
+                )}
+
+                <p className="pt-3 text-gray-600">
+                  {selectedEvent.extendedProps.description}
+                </p>
+              </div>
+
+              {/* EVENT IMAGE */}
+
+              {selectedEvent.extendedProps.image && (
+                <img
+                  src={`https://acfb.onrender.com${selectedEvent.extendedProps.image}`}
+                  alt={selectedEvent.title}
+                  className="mt-5 w-full h-64 object-cover rounded-xl"
+                />
+              )}
+            </div>
           </div>
         )}
       </div>

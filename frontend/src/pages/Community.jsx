@@ -1,46 +1,38 @@
 import { useEffect, useState } from "react";
+import axios from "axios";
+
+const API = "https://acfb.onrender.com/api/news";
 
 export default function Community() {
   const [news, setNews] = useState([]);
 
   useEffect(() => {
-    setNews([
-      {
-        id: 1,
-        title: "Farm Safety Awareness Week",
-        date: "May 2026",
-        content:
-          "Join local farmers and community members in promoting farm safety practices across rural areas.",
-      },
-      {
-        id: 2,
-        title: "New Agricultural Grants Available",
-        date: "April 2026",
-        content:
-          "State programs now offer expanded funding opportunities for small and mid-size farms.",
-      },
-      {
-        id: 3,
-        title: "Community Spring Event",
-        date: "March 2026",
-        content:
-          "Families gathered for a celebration of local agriculture, food, and education.",
-      },
-    ]);
+    fetchNews();
   }, []);
+
+  const fetchNews = async () => {
+    try {
+      const res = await axios.get(API);
+
+      setNews(res.data);
+    } catch (err) {
+      console.error("Error loading news:", err);
+    }
+  };
 
   return (
     <div
       className="min-h-screen bg-cover bg-center bg-no-repeat"
       style={{ backgroundImage: "url('/farm.png')" }}
     >
-      {/* DARK OVERLAY */}
+      {/* OVERLAY */}
       <div className="min-h-screen bg-black/80 py-12 px-4">
         <div className="max-w-6xl mx-auto">
           {/* HEADER */}
+
           <div className="text-center mb-10 text-white">
-            <h1 className="text-3xl md:text-4xl font-bold text-white">
-              Community Involvement
+            <h1 className="text-3xl md:text-4xl font-bold">
+              Community News
             </h1>
 
             <p className="text-gray-200 mt-3 max-w-3xl mx-auto">
@@ -50,20 +42,41 @@ export default function Community() {
             </p>
           </div>
 
-          {/* NEWS GRID */}
+          {/* NEWS */}
+
           <div className="grid md:grid-cols-3 gap-6">
+            {news.length === 0 && (
+              <p className="text-white col-span-3 text-center">
+                No community news available.
+              </p>
+            )}
+
             {news.map((item) => (
               <div
-                key={item.id}
-                className="bg-white/10 backdrop-blur-md rounded-2xl shadow-lg hover:shadow-2xl transition p-6 border border-white/20 text-white"
+                key={item._id}
+                className="bg-white/10 backdrop-blur-md rounded-2xl shadow-lg hover:shadow-2xl transition border border-white/20 overflow-hidden text-white"
               >
-                <p className="text-xs text-gray-300 mb-2">{item.date}</p>
+                {/* IMAGE */}
 
-                <h2 className="text-xl font-bold mb-3">{item.title}</h2>
+                {item.image && (
+                  <img
+                    src={`https://acfb.onrender.com${item.image}`}
+                    alt={item.title}
+                    className="w-full h-52 object-cover"
+                  />
+                )}
 
-                <p className="text-gray-200 text-sm leading-relaxed">
-                  {item.content}
-                </p>
+                <div className="p-6">
+                  <p className="text-xs text-gray-300 mb-2">
+                    {item.date && new Date(item.date).toLocaleDateString()}
+                  </p>
+
+                  <h2 className="text-xl font-bold mb-3">{item.title}</h2>
+
+                  <p className="text-gray-200 text-sm leading-relaxed">
+                    {item.content}
+                  </p>
+                </div>
               </div>
             ))}
           </div>
