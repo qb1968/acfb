@@ -14,7 +14,7 @@ router.post("/", auth, upload.single("image"), async (req, res) => {
     const news = new News({
       title: req.body.title,
       content: req.body.content,
-      date: req.body.date,
+      date: new Date(`${req.body.date}T12:00:00`),
       image: req.file ? `/uploads/${req.file.filename}` : "",
     });
 
@@ -34,7 +34,7 @@ router.put("/:id", auth, upload.single("image"), async (req, res) => {
     const updateData = {
       title: req.body.title,
       content: req.body.content,
-      date: req.body.date,
+      date: new Date(`${req.body.date}T12:00:00`),
     };
 
     // Only replace the image if a new one was uploaded
