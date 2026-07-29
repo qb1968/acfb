@@ -1,14 +1,25 @@
 import jwt from "jsonwebtoken";
 
 export default function (req, res, next) {
-  const token = req.header("Authorization");
-  if (!token) return res.status(401).json("Access denied");
+  const authHeader = req.header("Authorization");
+
+  if (!authHeader) {
+    return res.status(401).json("Access denied");
+  }
+
+  const token = authHeader.split(" ")[1];
+
+  if (!token) {
+    return res.status(401).json("No token provided");
+  }
 
   try {
     const verified = jwt.verify(token, process.env.JWT_SECRET);
+
     req.user = verified;
+
     next();
-  } catch {
+  } catch (err) {
     res.status(400).json("Invalid token");
   }
 }
