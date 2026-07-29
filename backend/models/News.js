@@ -1,9 +1,27 @@
 import mongoose from "mongoose";
 
-const newsSchema = new mongoose.Schema({
-  title: String,
-  content: String,
-  createdAt: { type: Date, default: Date.now },
-});
+const newsSchema = new mongoose.Schema(
+  {
+    title: {
+      type: String,
+      required: true,
+    },
+
+    content: {
+      type: String,
+      required: true,
+    },
+
+    date: {
+      type: Date,
+      required: true,
+    },
+
+    image: String,
+  },
+  {
+    timestamps: true,
+  },
+);
 
 export default mongoose.model("News", newsSchema);
