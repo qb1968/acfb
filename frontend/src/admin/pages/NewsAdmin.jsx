@@ -32,7 +32,7 @@ export default function NewsAdmin() {
     }
   };
 
-  // CREATE / UPDATE
+  // CREATE / UPDATE NEWS
   const handleSubmit = async (e) => {
     e.preventDefault();
 
@@ -44,6 +44,11 @@ export default function NewsAdmin() {
 
     if (image) {
       formData.append("image", image);
+    }
+
+    // DEBUG FORM DATA
+    for (let pair of formData.entries()) {
+      console.log(pair[0], pair[1]);
     }
 
     try {
@@ -60,6 +65,7 @@ export default function NewsAdmin() {
         await axios.post(API, formData, {
           headers: {
             Authorization: `Bearer ${token}`,
+            "Content-Type": "multipart/form-data",
           },
         });
 
@@ -69,19 +75,24 @@ export default function NewsAdmin() {
       clearForm();
       fetchNews();
     } catch (err) {
-      console.error(err);
+      console.error("SAVE ERROR:", err);
       alert("Error saving news");
     }
   };
 
-  // EDIT
+  // EDIT NEWS
   const editNews = (item) => {
     setEditingId(item._id);
 
     setTitle(item.title);
+
     setContent(item.content);
 
-    setDate(item.date ? item.date.substring(0, 10) : "");
+    if (item.date) {
+      setDate(item.date.substring(0, 10));
+    } else {
+      setDate("");
+    }
 
     if (item.image) {
       setPreview(`https://acfb.onrender.com${item.image}`);
@@ -92,7 +103,7 @@ export default function NewsAdmin() {
     setImage(null);
   };
 
-  // DELETE
+  // DELETE NEWS
   const deleteNews = async (id) => {
     if (!window.confirm("Delete this news item?")) {
       return;
@@ -102,7 +113,6 @@ export default function NewsAdmin() {
       await axios.delete(`${API}/${id}`, {
         headers: {
           Authorization: `Bearer ${token}`,
-          "Content-Type": "multipart/form-data",
         },
       });
 
@@ -131,10 +141,13 @@ export default function NewsAdmin() {
     setEditingId(null);
 
     setTitle("");
+
     setContent("");
+
     setDate("");
 
     setImage(null);
+
     setPreview("");
   };
 
@@ -143,8 +156,6 @@ export default function NewsAdmin() {
       <h1 className="text-3xl font-bold mb-8">
         {editingId ? "Edit News" : "News Administration"}
       </h1>
-
-      {/* FORM */}
 
       <form
         onSubmit={handleSubmit}
@@ -169,8 +180,11 @@ export default function NewsAdmin() {
 
         <input
           type="date"
-          value={date}
-          onChange={(e) => setDate(e.target.value)}
+          value={date || ""}
+          onChange={(e) => {
+            console.log("Selected date:", e.target.value);
+            setDate(e.target.value);
+          }}
           className="w-full border p-3 rounded-lg"
           required
         />
@@ -214,8 +228,6 @@ export default function NewsAdmin() {
         </div>
       </form>
 
-      {/* NEWS LIST */}
-
       <section className="mt-12">
         <h2 className="text-2xl font-bold mb-6">Existing News</h2>
 
@@ -237,7 +249,9 @@ export default function NewsAdmin() {
                 <h3 className="text-xl font-bold">{item.title}</h3>
 
                 <p className="text-gray-500 text-sm">
-                  {item.date && new Date(item.date).toLocaleDateString()}
+                  {item.date
+                    ? new Date(item.date).toLocaleDateString()
+                    : new Date(item.createdAt).toLocaleDateString()}
                 </p>
 
                 <p className="mt-3 text-gray-700">{item.content}</p>
