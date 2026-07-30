@@ -8,7 +8,7 @@ import authRoutes from "./routes/auth.js";
 import eventRoutes from "./routes/events.js";
 import galleryRoutes from "./routes/gallery.js";
 import newsRoutes from "./routes/news.js";
-import officerRoutes from "./routes/Officer.js";
+import officerRoutes from "./routes/officers.js";
 
 dotenv.config();
 
