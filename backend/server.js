@@ -9,6 +9,9 @@ import eventRoutes from "./routes/events.js";
 import galleryRoutes from "./routes/gallery.js";
 import newsRoutes from "./routes/news.js";
 import officerRoutes from "./routes/officers.js";
+import youngFarmerRoutes from "./routes/youngFarmers.js";
+import youngFarmerNewsRoutes from "./routes/youngFarmerNews.js";
+import youngFarmerEventRoutes from "./routes/youngFarmerEvents.js";
 
 dotenv.config();
 
@@ -30,6 +33,11 @@ app.use("/api/events", eventRoutes);
 app.use("/api/gallery", galleryRoutes);
 app.use("/api/news", newsRoutes);
 app.use("/api/officers", officerRoutes);
+app.use("/api/young-farmers", youngFarmerRoutes);
+
+app.use("/api/young-farmer-news", youngFarmerNewsRoutes);
+
+app.use("/api/young-farmer-events", youngFarmerEventRoutes);
 
 // MongoDB
 mongoose
