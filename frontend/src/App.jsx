@@ -46,6 +46,7 @@ import Women from "./pages/Women";
 /* ADMIN */
 import Login from "./admin/pages/Login";
 import AdminLayout from "./admin/AdminLayout";
+import AdminDashboard from "./admin/pages/AdminDashboard";
 import EventsAdmin from "./admin/pages/EventsAdmin";
 import GalleryAdmin from "./admin/pages/GalleryAdmin";
 import OfficersAdmin from "./admin/pages/OfficersAdmin";
@@ -168,6 +169,7 @@ export default function App() {
           </ProtectedRoute>
         }
       >
+        <Route index element={<AdminDashboard />} />
         <Route path="events" element={<EventsAdmin />} />
         <Route path="gallery" element={<GalleryAdmin />} />
         <Route path="news" element={<NewsAdmin />} />

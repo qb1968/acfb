@@ -38,7 +38,7 @@ export default function Women() {
         <div className="absolute inset-0 bg-black/70"></div>
 
         <div className="relative z-10 max-w-7xl mx-auto px-6 text-white">
-          <h1 className="text-4xl md:text-5xl font-bold">Women's Committee</h1>
+          <h1 className="text-4xl md:text-5xl font-bold">Women's Leadership Committee</h1>
 
           <p className="mt-3 text-lg text-gray-200 max-w-2xl">
             Supporting agriculture, leadership, education, and community
@@ -52,11 +52,11 @@ export default function Women() {
       <section className="max-w-7xl mx-auto px-6 py-12">
         <div className="bg-white rounded-2xl shadow-lg p-8">
           <h2 className="text-3xl font-bold text-primary mb-4">
-            About Our Women's Committee
+            About Our Women's Leadership Committee
           </h2>
 
           <p className="text-gray-600 leading-relaxed">
-            The Women's Committee provides opportunities for women involved in
+            The Women's Leadership Committee provides opportunities for women involved in
             agriculture to develop leadership skills, support local programs,
             and strengthen our farming community.
           </p>

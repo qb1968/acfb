@@ -1,140 +1,299 @@
-// src/components/Navbar.jsx
 import { useState } from "react";
-import { Link, NavLink } from "react-router-dom";
-import { Menu, X, Phone, Mail } from "lucide-react";
-import { FaFacebook } from "react-icons/fa";
+import { Link } from "react-router-dom";
 
 export default function Navbar() {
-  const [open, setOpen] = useState(false);
+  const [mobileOpen, setMobileOpen] = useState(false);
 
-  const navClass = ({ isActive }) =>
-    `transition-colors duration-200 ${
-      isActive ? "text-accent font-semibold" : "text-primary hover:text-accent"
-    }`;
+  const [dropdown, setDropdown] = useState(null);
+
+  const toggleDropdown = (name) => {
+    setDropdown(dropdown === name ? null : name);
+  };
 
   return (
-    <header className="sticky top-0 z-50 shadow-lg">
-      {/* Top Bar */}
-      <div className="bg-primary text-white text-sm">
-        <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 py-2 flex flex-col sm:flex-row items-center justify-between gap-2">
-          <p className="text-center sm:text-left">
-            Supporting Agriculture & Rural Communities
-          </p>
-          <div className="flex items-center gap-2">
-            <Phone size={16} />
-            <span>(336) 226-2477</span>
-            <Mail size={16} />
-            <span>info@acfarmbureau.com</span>
-            {/* <a href="https://facebook.com" target="_blank">
-            <FaFacebook size={22} />
-            </a> */}
-          </div>
-        </div>
-      </div>
+    <nav
+      className="
+      bg-white
+      shadow-md
+      sticky
+      top-0
+      z-50
+    "
+    >
+      <div
+        className="
+        max-w-7xl
+        mx-auto
+        px-6
+        py-4
+        flex
+        items-center
+        justify-between
+      "
+      >
+        {/* LOGO */}
 
-      {/* Main Nav */}
-      <nav className="bg-white">
-        <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 flex items-center justify-between h-20">
-          <Link to="/" className="flex items-center gap-3">
-            <img
-              src="/logo.jpg"
-              alt="Farm Bureau Logo"
-              className="h-12 w-auto"
-            />
+        <Link
+          to="/"
+          className="
+            flex
+            items-center
+            gap-3
+          "
+        >
+          <img
+            src="/logo.jpg"
+            alt="Farm Bureau"
+            className="
+              h-12
+              w-12
+              object-contain
+            "
+          />
+
+          <div>
+            <h1
+              className="
+              font-bold
+              text-primary
+              leading-none
+            "
+            >
+              Alamance County
+            </h1>
+
+            <p
+              className="
+              text-sm
+              text-gray-600
+            "
+            >
+              Farm Bureau
+            </p>
+          </div>
+        </Link>
+
+        {/* DESKTOP NAV */}
+
+        <div
+          className="
+          hidden
+          md:flex
+          items-center
+          gap-8
+          font-semibold
+        "
+        >
+          <Link to="/" className="hover:text-primary">
+            Home
           </Link>
 
-          {/* Desktop Nav */}
-          <div className="hidden md:flex items-center gap-8 font-medium">
-            <NavLink to="/" className={navClass}>
-              Home
-            </NavLink>
-            <NavLink to="/about" className={navClass}>
-              About
-            </NavLink>
-            <NavLink to="/gallery" className={navClass}>
-              Gallery
-            </NavLink>
-            <NavLink to="/officers" className={navClass}>
-              Officers
-            </NavLink>
-            <NavLink to="/contact" className={navClass}>
-              Contact
-            </NavLink>
+          {/* ABOUT DROPDOWN */}
 
-            <Link
-              to="/membership"
-              onClick={() => setOpen(false)}
-              className="bg-accent text-primary px-5 py-3 rounded-full font-semibold text-center"
+          <div className="relative">
+            <button
+              onClick={() => toggleDropdown("about")}
+              className="
+                hover:text-primary
+              "
             >
-              Join Today
-            </Link>
+              About ▾
+            </button>
+
+            {dropdown === "about" && (
+              <div
+                className="
+                  absolute
+                  top-10
+                  left-0
+                  bg-white
+                  shadow-xl
+                  rounded-xl
+                  p-4
+                  w-52
+                  z-50
+                "
+              >
+                <Link
+                  to="/about"
+                  onClick={() => setDropdown(null)}
+                  className="
+                    block
+                    py-2
+                    hover:text-primary
+                  "
+                >
+                  About Us
+                </Link>
+
+                <Link
+                  to="/officers"
+                  onClick={() => setDropdown(null)}
+                  className="
+                    block
+                    py-2
+                    hover:text-primary
+                  "
+                >
+                  Officers
+                </Link>
+
+                <Link
+                  to="/membership"
+                  onClick={() => setDropdown(null)}
+                  className="
+                    block
+                    py-2
+                    hover:text-primary
+                  "
+                >
+                  Membership
+                </Link>
+              </div>
+            )}
           </div>
 
-          {/* Mobile Toggle */}
-          <button
-            className="md:hidden text-primary"
-            onClick={() => setOpen(!open)}
-          >
-            {open ? <X size={28} /> : <Menu size={28} />}
-          </button>
+          {/* PROGRAMS DROPDOWN */}
+
+          <div className="relative">
+            <button
+              onClick={() => toggleDropdown("programs")}
+              className="
+                hover:text-primary
+              "
+            >
+              Programs ▾
+            </button>
+
+            {dropdown === "programs" && (
+              <div
+                className="
+                  absolute
+                  top-10
+                  left-0
+                  bg-white
+                  shadow-xl
+                  rounded-xl
+                  p-4
+                  w-64
+                  z-50
+                "
+              >
+                <Link
+                  to="/young-farmers"
+                  onClick={() => setDropdown(null)}
+                  className="
+                    block
+                    py-2
+                    hover:text-primary
+                  "
+                >
+                  Young Farmers & Ranchers
+                </Link>
+
+                <Link
+                  to="/women"
+                  onClick={() => setDropdown(null)}
+                  className="
+                    block
+                    py-2
+                    hover:text-primary
+                  "
+                >
+                  Women's Committee
+                </Link>
+
+                <Link
+                  to="/community"
+                  onClick={() => setDropdown(null)}
+                  className="
+                    block
+                    py-2
+                    hover:text-primary
+                  "
+                >
+                  Community News
+                </Link>
+              </div>
+            )}
+          </div>
+
+          <Link to="/events" className="hover:text-primary">
+            Events
+          </Link>
+
+          <Link to="/gallery" className="hover:text-primary">
+            Gallery
+          </Link>
+
+          <Link to="/contact" className="hover:text-primary">
+            Contact
+          </Link>
         </div>
 
-        {/* Mobile Menu */}
-        <div
-          className={`md:hidden overflow-hidden transition-all duration-300 ${
-            open ? "max-h-96" : "max-h-0"
-          }`}
+        {/* MOBILE BUTTON */}
+
+        <button
+          onClick={() => setMobileOpen(!mobileOpen)}
+          className="
+            md:hidden
+            text-3xl
+          "
         >
-          <div className="px-6 pb-6 flex flex-col gap-4 bg-white shadow-inner">
-            <NavLink
-              to="/"
-              className="text-primary font-medium"
-              onClick={() => setOpen(false)}
-            >
-              Home
-            </NavLink>
+          ☰
+        </button>
+      </div>
 
-            <NavLink
-              to="/about"
-              className="text-primary font-medium"
-              onClick={() => setOpen(false)}
-            >
-              About
-            </NavLink>
-            <NavLink
-              to="/gallery"
-              className="text-primary font-medium"
-              onClick={() => setOpen(false)}
-            >
-              Gallery
-            </NavLink>
-            <NavLink
-              to="/officers"
-              className="text-primary font-medium"
-              onClick={() => setOpen(false)}
-            >
-              Officers
-            </NavLink>
+      {/* MOBILE MENU */}
 
-            <NavLink
-              to="/contact"
-              className="text-primary font-medium"
-              onClick={() => setOpen(false)}
-            >
-              Contact
-            </NavLink>
+      {mobileOpen && (
+        <div
+          className="
+            md:hidden
+            bg-white
+            border-t
+            px-6
+            py-5
+            space-y-4
+          "
+        >
+          <Link to="/" className="block">
+            Home
+          </Link>
 
-            {/* ✅ FIXED JOIN TODAY BUTTON */}
-            <Link
-              to="/membership"
-              onClick={() => setOpen(false)}
-              className="bg-accent text-primary px-5 py-3 rounded-full font-semibold text-center block"
-            >
-              Join Today
-            </Link>
-          </div>
+          <Link to="/about" className="block">
+            About
+          </Link>
+
+          <Link to="/officers" className="block">
+            Officers
+          </Link>
+
+          <Link to="/membership" className="block">
+            Membership
+          </Link>
+
+          <Link to="/young-farmers" className="block">
+            Young Farmers & Ranchers
+          </Link>
+
+          <Link to="/women" className="block">
+            Women's Committee
+          </Link>
+
+          <Link to="/events" className="block">
+            Events
+          </Link>
+
+          <Link to="/gallery" className="block">
+            Gallery
+          </Link>
+
+          <Link to="/contact" className="block">
+            Contact
+          </Link>
         </div>
-      </nav>
-    </header>
+      )}
+    </nav>
   );
 }
