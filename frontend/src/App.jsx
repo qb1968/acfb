@@ -46,6 +46,7 @@ import Login from "./admin/pages/Login";
 import AdminLayout from "./admin/AdminLayout";
 import EventsAdmin from "./admin/pages/EventsAdmin";
 import GalleryAdmin from "./admin/pages/GalleryAdmin";
+import OfficersAdmin from "./admin/pages/OfficersAdmin";
 
 import NewsAdmin from "./admin/pages/NewsAdmin";
 import ProtectedRoute from "./admin/ProtectedRoute";
@@ -141,6 +142,7 @@ export default function App() {
         <Route path="events" element={<EventsAdmin />} />
         <Route path="gallery" element={<GalleryAdmin />} />
         <Route path="news" element={<NewsAdmin />} />
+        <Route path="officers" element={<OfficersAdmin />} />
       </Route>
     </Routes>
   );

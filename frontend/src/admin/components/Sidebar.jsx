@@ -10,6 +10,7 @@ export default function Sidebar() {
         <Link to="/admin/events">Events</Link>
         <Link to="/admin/gallery">Gallery</Link>
         <Link to="/admin/news">News</Link>
+        <Link to="/admin/officers">Officers</Link>
       </nav>
     </div>
   );
