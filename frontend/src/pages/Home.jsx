@@ -2,6 +2,10 @@ import { Link } from "react-router-dom";
 import { useEffect, useState } from "react";
 import axios from "axios";
 import UpcomingEvents from "../components/UpcomingEvents";
+import YoungFarmersCard from "../components/YoungFarmersCard";
+import WomenCard from "../components/WomenCard";
+import EventsCard from "../components/EventsCard";
+import NewsCard from "../components/NewsCard";
 
 export default function Home() {
   const [latestNews, setLatestNews] = useState(null);
@@ -61,43 +65,16 @@ export default function Home() {
             </div>
 
             {/* FEATURE CARDS */}
-            <div className="mt-10 grid grid-cols-2 gap-4">
-              <Link to="/events">
-                <UpcomingEvents />
-              </Link>
+            {/* FEATURE CARDS */}
+            <div className="mt-10 grid sm:grid-cols-2 md:grid-cols-2 gap-4">
+              {/* EVENTS */}
+              <EventsCard />
 
-              {/* COMMUNITY NEWS CARD */}
-              <Link to="/community">
-                <div className="bg-white/10 backdrop-blur-md border border-white/20 rounded-2xl p-5 hover:bg-white/20 transition shadow-lg">
-                  <div className="inline-block bg-accent text-primary text-xs font-bold px-3 py-1 rounded-full mb-3">
-                    Latest News
-                  </div>
+              {/* COMMUNITY NEWS */}
+             <NewsCard />
 
-                  {latestNews ? (
-                    <>
-                      <h3 className="font-bold text-lg mb-2">
-                        {latestNews.title}
-                      </h3>
-
-                      <p className="text-xs text-gray-300 mb-2">
-                        {new Date(latestNews.date).toLocaleDateString()}
-                      </p>
-
-                      <p className="text-sm text-gray-200 line-clamp-3">
-                        {latestNews.content}
-                      </p>
-                    </>
-                  ) : (
-                    <>
-                      <h3 className="font-bold text-lg mb-1">Community News</h3>
-
-                      <p className="text-sm text-gray-200">
-                        Stay connected with local programs and initiatives.
-                      </p>
-                    </>
-                  )}
-                </div>
-              </Link>
+              <YoungFarmersCard />
+              <WomenCard/>
             </div>
           </div>
 

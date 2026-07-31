@@ -41,12 +41,20 @@ import EventsCalendar from "./pages/EventsCalendar";
 import Gallery from "./pages/Gallery";
 import Community from "./pages/Community";
 import Officers from "./pages/Officers";
+import YoungFarmers from "./pages/YoungFarmers";
+import Women from "./pages/Women";
 /* ADMIN */
 import Login from "./admin/pages/Login";
 import AdminLayout from "./admin/AdminLayout";
 import EventsAdmin from "./admin/pages/EventsAdmin";
 import GalleryAdmin from "./admin/pages/GalleryAdmin";
 import OfficersAdmin from "./admin/pages/OfficersAdmin";
+import YoungFarmersAdmin from "./admin/pages/YoungFarmersAdmin";
+import YoungFarmerNewsAdmin from "./admin/pages/YoungFarmersNewsAdmin";
+import YoungFarmerEventsAdmin from "./admin/pages/YoungFarmersEventsAdmin";
+import WomenMembersAdmin from "./admin/pages/WomenMembersAdmin";
+import WomenNewsAdmin from "./admin/pages/WomenNewsAdmin";
+import WomenEventsAdmin from "./admin/pages/WomenEventsAdmin";
 
 import NewsAdmin from "./admin/pages/NewsAdmin";
 import ProtectedRoute from "./admin/ProtectedRoute";
@@ -121,11 +129,32 @@ export default function App() {
         }
       />
 
-      <Route path="/officers" element={
-        <Page>
-          <Officers />
-        </Page>
-      } />
+      <Route
+        path="/officers"
+        element={
+          <Page>
+            <Officers />
+          </Page>
+        }
+      />
+
+      <Route
+        path="/young-farmers"
+        element={
+          <Page>
+            <YoungFarmers />
+          </Page>
+        }
+      />
+
+      <Route
+        path="/women"
+        element={
+          <Page>
+            <Women />
+          </Page>
+        }
+      />
 
       {/* ADMIN LOGIN */}
       <Route path="/admin/login" element={<Login />} />
@@ -143,6 +172,19 @@ export default function App() {
         <Route path="gallery" element={<GalleryAdmin />} />
         <Route path="news" element={<NewsAdmin />} />
         <Route path="officers" element={<OfficersAdmin />} />
+        <Route path="young-farmers" element={<YoungFarmersAdmin />} />
+
+        <Route path="young-farmer-news" element={<YoungFarmerNewsAdmin />} />
+
+        <Route
+          path="young-farmer-events"
+          element={<YoungFarmerEventsAdmin />}
+        />
+        <Route path="women-members" element={<WomenMembersAdmin />} />
+
+        <Route path="women-news" element={<WomenNewsAdmin />} />
+
+        <Route path="women-events" element={<WomenEventsAdmin />} />
       </Route>
     </Routes>
   );

@@ -11,6 +11,14 @@ export default function Sidebar() {
         <Link to="/admin/gallery">Gallery</Link>
         <Link to="/admin/news">News</Link>
         <Link to="/admin/officers">Officers</Link>
+        <Link to="/admin/young-farmers">Young Farmers Committee</Link>
+
+        <Link to="/admin/young-farmer-news">Young Farmers News</Link>
+
+        <Link to="/admin/young-farmer-events">Young Farmers Events</Link>
+        <Link to="/admin/women-members">Women's Committee Members</Link>
+        <Link to="/admin/women-news">Women's News</Link>
+        <Link to="/admin/women-events">Women's Events</Link>
       </nav>
     </div>
   );
