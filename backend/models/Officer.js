@@ -22,6 +22,11 @@ const officerSchema = new mongoose.Schema(
       type: String,
       default: "Member",
     },
+
+    order: {
+      type: Number,
+      default: 99,
+    },
   },
   {
     timestamps: true,

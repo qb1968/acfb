@@ -8,7 +8,7 @@ const router = express.Router();
 router.get("/", async (req, res) => {
   try {
     const officers = await Officer.find().sort({
-      type: 1,
+      order: 1,
       name: 1,
     });
 
