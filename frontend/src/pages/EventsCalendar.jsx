@@ -24,6 +24,37 @@ export default function EventsCalendar() {
     }
   };
 
+  // Convert 24 hour time to 12 hour format
+
+  const formatTime = (time) => {
+    if (!time) return "";
+
+    const [hour, minute] = time.split(":");
+
+    const date = new Date();
+
+    date.setHours(hour);
+    date.setMinutes(minute);
+
+    return date.toLocaleTimeString([], {
+      hour: "numeric",
+      minute: "2-digit",
+      hour12: true,
+    });
+  };
+
+  // Fix image URL
+
+  const imageUrl = (image) => {
+    if (!image) return "";
+
+    if (image.startsWith("http")) {
+      return image;
+    }
+
+    return `https://acfb.onrender.com${image}`;
+  };
+
   // Convert database events for FullCalendar
 
   const calendarEvents = events.map((event) => ({
@@ -31,7 +62,7 @@ export default function EventsCalendar() {
 
     title: event.title,
 
-    start: event.date,
+    start: `${event.date.substring(0, 10)}T${event.startTime || "00:00"}`,
 
     extendedProps: {
       description: event.description,
@@ -47,8 +78,6 @@ export default function EventsCalendar() {
       image: event.image,
     },
 
-    // CATEGORY COLORS
-
     backgroundColor:
       event.category === "Meeting"
         ? "#2563eb"
@@ -58,8 +87,6 @@ export default function EventsCalendar() {
             ? "#f97316"
             : "#7c3aed",
   }));
-
-  // Calendar event clicked
 
   const handleEventClick = (info) => {
     setSelectedEvent(info.event);
@@ -84,6 +111,12 @@ export default function EventsCalendar() {
           <FullCalendar
             plugins={[dayGridPlugin, timeGridPlugin, interactionPlugin]}
             initialView="dayGridMonth"
+            displayEventTime={true}
+            eventTimeFormat={{
+              hour: "numeric",
+              minute: "2-digit",
+              meridiem: "short",
+            }}
             headerToolbar={{
               left: "prev,next today",
 
@@ -97,35 +130,72 @@ export default function EventsCalendar() {
           />
         </div>
 
-        {/* EVENT POPUP MODAL */}
+        {/* EVENT POPUP */}
 
         {selectedEvent && (
           <div
-            className="fixed inset-0 z-50 flex items-center justify-center bg-black/70 px-4"
+            className="
+              fixed
+              inset-0
+              z-50
+              flex
+              items-center
+              justify-center
+              bg-black/70
+              px-4
+            "
             onClick={() => setSelectedEvent(null)}
           >
             <div
-              className="bg-white rounded-2xl shadow-2xl max-w-lg w-full p-6 relative"
+              className="
+                bg-white
+                rounded-2xl
+                shadow-2xl
+                max-w-lg
+                w-full
+                p-6
+                relative
+              "
               onClick={(e) => e.stopPropagation()}
             >
-              {/* CLOSE BUTTON */}
+              {/* CLOSE */}
 
               <button
                 onClick={() => setSelectedEvent(null)}
-                className="absolute top-4 right-4 text-gray-500 hover:text-black text-xl"
+                className="
+                  absolute
+                  top-4
+                  right-4
+                  text-gray-500
+                  hover:text-black
+                  text-xl
+                "
               >
                 ✕
               </button>
 
               {/* TITLE */}
 
-              <h2 className="text-2xl font-bold text-primary pr-8">
+              <h2
+                className="
+                text-2xl
+                font-bold
+                text-primary
+                pr-8
+              "
+              >
                 {selectedEvent.title}
               </h2>
 
-              {/* EVENT INFORMATION */}
+              {/* DETAILS */}
 
-              <div className="mt-5 space-y-3 text-gray-700">
+              <div
+                className="
+                mt-5
+                space-y-3
+                text-gray-700
+              "
+              >
                 {selectedEvent.extendedProps.location && (
                   <p>
                     📍 <strong>Location:</strong>{" "}
@@ -136,9 +206,9 @@ export default function EventsCalendar() {
                 {selectedEvent.extendedProps.startTime && (
                   <p>
                     ⏰ <strong>Time:</strong>{" "}
-                    {selectedEvent.extendedProps.startTime}
+                    {formatTime(selectedEvent.extendedProps.startTime)}
                     {" - "}
-                    {selectedEvent.extendedProps.endTime}
+                    {formatTime(selectedEvent.extendedProps.endTime)}
                   </p>
                 )}
 
@@ -149,18 +219,30 @@ export default function EventsCalendar() {
                   </p>
                 )}
 
-                <p className="pt-3 text-gray-600">
+                <p
+                  className="
+                  pt-3
+                  text-gray-600
+                "
+                >
                   {selectedEvent.extendedProps.description}
                 </p>
               </div>
 
-              {/* EVENT IMAGE */}
+              {/* IMAGE */}
 
               {selectedEvent.extendedProps.image && (
                 <img
-                  src={selectedEvent.extendedProps.image}
+                  src={imageUrl(selectedEvent.extendedProps.image)}
                   alt={selectedEvent.title}
-                  className="mt-5 w-full h-64 object-cover rounded-xl shadow-lg"
+                  className="
+                    mt-5
+                    w-full
+                    h-64
+                    object-cover
+                    rounded-xl
+                    shadow-lg
+                  "
                 />
               )}
             </div>
