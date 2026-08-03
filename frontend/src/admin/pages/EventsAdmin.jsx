@@ -1,5 +1,6 @@
 import { useEffect, useState } from "react";
 import axios from "axios";
+import { formatTimeRange } from "../../utils/timeFormat";
 
 const API = "https://acfb.onrender.com/api/events";
 
@@ -292,9 +293,7 @@ export default function EventsAdmin() {
 
                 <p>📍 {event.location}</p>
 
-                <p>
-                  ⏰ {event.startTime} - {event.endTime}
-                </p>
+                <p>⏰ {formatTimeRange(event.startTime, event.endTime)}</p>
 
                 <p>🏷 {event.category}</p>
 

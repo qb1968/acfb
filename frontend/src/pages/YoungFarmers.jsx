@@ -1,6 +1,6 @@
 import { useEffect, useState } from "react";
 import axios from "axios";
-
+import { formatTimeRange } from "../utils/timeFormat";
 const API = "https://acfb.onrender.com";
 
 export default function YoungFarmers() {
@@ -272,6 +272,12 @@ export default function YoungFarmers() {
                 <p className="text-gray-600 mt-2">
                   📅 {new Date(event.date).toLocaleDateString()}
                 </p>
+
+                {event.startTime && (
+                  <p className="text-gray-600 mt-2">
+                    ⏰ {formatTimeRange(event.startTime, event.endTime)}
+                  </p>
+                )}
 
                 <p className="text-gray-600 mt-2">📍 {event.location}</p>
 

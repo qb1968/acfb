@@ -1,5 +1,6 @@
 import { useEffect, useState } from "react";
 import axios from "axios";
+import { formatTimeRange } from "../utils/timeFormat";
 
 import FullCalendar from "@fullcalendar/react";
 import dayGridPlugin from "@fullcalendar/daygrid";
@@ -22,25 +23,6 @@ export default function EventsCalendar() {
     } catch (err) {
       console.error("Error loading events:", err);
     }
-  };
-
-  // Convert 24 hour time to 12 hour format
-
-  const formatTime = (time) => {
-    if (!time) return "";
-
-    const [hour, minute] = time.split(":");
-
-    const date = new Date();
-
-    date.setHours(hour);
-    date.setMinutes(minute);
-
-    return date.toLocaleTimeString([], {
-      hour: "numeric",
-      minute: "2-digit",
-      hour12: true,
-    });
   };
 
   // Fix image URL
@@ -158,8 +140,6 @@ export default function EventsCalendar() {
               "
               onClick={(e) => e.stopPropagation()}
             >
-              {/* CLOSE */}
-
               <button
                 onClick={() => setSelectedEvent(null)}
                 className="
@@ -174,8 +154,6 @@ export default function EventsCalendar() {
                 ✕
               </button>
 
-              {/* TITLE */}
-
               <h2
                 className="
                 text-2xl
@@ -186,8 +164,6 @@ export default function EventsCalendar() {
               >
                 {selectedEvent.title}
               </h2>
-
-              {/* DETAILS */}
 
               <div
                 className="
@@ -206,9 +182,11 @@ export default function EventsCalendar() {
                 {selectedEvent.extendedProps.startTime && (
                   <p>
                     ⏰ <strong>Time:</strong>{" "}
-                    {formatTime(selectedEvent.extendedProps.startTime)}
-                    {" - "}
-                    {formatTime(selectedEvent.extendedProps.endTime)}
+                    {formatTimeRange(
+                      selectedEvent.extendedProps.startTime,
+
+                      selectedEvent.extendedProps.endTime,
+                    )}
                   </p>
                 )}
 
@@ -228,8 +206,6 @@ export default function EventsCalendar() {
                   {selectedEvent.extendedProps.description}
                 </p>
               </div>
-
-              {/* IMAGE */}
 
               {selectedEvent.extendedProps.image && (
                 <img

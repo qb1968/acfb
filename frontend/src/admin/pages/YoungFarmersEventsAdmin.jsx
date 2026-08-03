@@ -1,5 +1,6 @@
 import { useEffect, useState } from "react";
 import axios from "axios";
+import { formatTimeRange } from "../../utils/timeFormat";
 
 const API = "https://acfb.onrender.com/api/young-farmer-events";
 
@@ -15,6 +16,8 @@ export default function YoungFarmersEventsAdmin() {
   const [form, setForm] = useState({
     title: "",
     date: "",
+    startTime: "",
+    endTime: "",
     location: "",
     description: "",
   });
@@ -46,7 +49,6 @@ export default function YoungFarmersEventsAdmin() {
   const handleChange = (e) => {
     setForm({
       ...form,
-
       [e.target.name]: e.target.value,
     });
   };
@@ -76,29 +78,17 @@ export default function YoungFarmersEventsAdmin() {
 
     try {
       if (editing) {
-        await axios.put(
-          `${API}/${editing}`,
-
-          data,
-
-          {
-            headers: {
-              "Content-Type": "multipart/form-data",
-            },
+        await axios.put(`${API}/${editing}`, data, {
+          headers: {
+            "Content-Type": "multipart/form-data",
           },
-        );
+        });
       } else {
-        await axios.post(
-          API,
-
-          data,
-
-          {
-            headers: {
-              "Content-Type": "multipart/form-data",
-            },
+        await axios.post(API, data, {
+          headers: {
+            "Content-Type": "multipart/form-data",
           },
-        );
+        });
       }
 
       clearForm();
@@ -118,6 +108,10 @@ export default function YoungFarmersEventsAdmin() {
       title: event.title || "",
 
       date: event.date ? event.date.substring(0, 10) : "",
+
+      startTime: event.startTime || "",
+
+      endTime: event.endTime || "",
 
       location: event.location || "",
 
@@ -146,11 +140,10 @@ export default function YoungFarmersEventsAdmin() {
   const clearForm = () => {
     setForm({
       title: "",
-
       date: "",
-
+      startTime: "",
+      endTime: "",
       location: "",
-
       description: "",
     });
 
@@ -181,12 +174,7 @@ space-y-4
           value={form.title}
           onChange={handleChange}
           placeholder="Event Title"
-          className="
-border
-p-3
-rounded
-w-full
-"
+          className="border p-3 rounded w-full"
         />
 
         <input
@@ -194,25 +182,33 @@ w-full
           name="date"
           value={form.date}
           onChange={handleChange}
-          className="
-border
-p-3
-rounded
-w-full
-"
+          className="border p-3 rounded w-full"
         />
+
+        <div className="grid grid-cols-2 gap-4">
+          <input
+            type="time"
+            name="startTime"
+            value={form.startTime}
+            onChange={handleChange}
+            className="border p-3 rounded w-full"
+          />
+
+          <input
+            type="time"
+            name="endTime"
+            value={form.endTime}
+            onChange={handleChange}
+            className="border p-3 rounded w-full"
+          />
+        </div>
 
         <input
           name="location"
           value={form.location}
           onChange={handleChange}
           placeholder="Location"
-          className="
-border
-p-3
-rounded
-w-full
-"
+          className="border p-3 rounded w-full"
         />
 
         <textarea
@@ -220,24 +216,14 @@ w-full
           value={form.description}
           onChange={handleChange}
           placeholder="Description"
-          className="
-border
-p-3
-rounded
-w-full
-"
+          className="border p-3 rounded w-full h-32"
         />
 
         <input
           type="file"
           accept="image/*"
           onChange={handleImage}
-          className="
-border
-p-3
-rounded
-w-full
-"
+          className="border p-3 rounded w-full"
         />
 
         {preview && (
@@ -317,6 +303,10 @@ mb-4
             <h2 className="text-xl font-bold">{event.title}</h2>
 
             <p>📅 {new Date(event.date).toLocaleDateString()}</p>
+
+            {event.startTime && (
+              <p>⏰ {formatTimeRange(event.startTime, event.endTime)}</p>
+            )}
 
             <p>📍 {event.location}</p>
 
