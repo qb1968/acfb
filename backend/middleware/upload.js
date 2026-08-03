@@ -1,10 +1,20 @@
 import multer from "multer";
+import { CloudinaryStorage } from "multer-storage-cloudinary";
 
-const storage = multer.diskStorage({
-  destination: "uploads/",
-  filename: (req, file, cb) => {
-    cb(null, Date.now() + "-" + file.originalname);
+import cloudinary from "../config/cloudinary.js";
+
+const storage = new CloudinaryStorage({
+  cloudinary: cloudinary,
+
+  params: {
+    folder: "acfb",
+
+    allowed_formats: ["jpg", "png", "jpeg", "webp"],
   },
 });
 
-export const upload = multer({ storage });
+const upload = multer({
+  storage,
+});
+
+export default upload;

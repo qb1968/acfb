@@ -5,20 +5,13 @@ import { upload } from "../middleware/upload.js";
 
 const router = express.Router();
 
+// GET NEWS
+
 router.get("/", async (req, res) => {
-  res.json(await News.find());
-});
-
-router.post("/", auth, upload.single("image"), async (req, res) => {
   try {
-    const news = new News({
-      title: req.body.title,
-      content: req.body.content,
-      date: new Date(`${req.body.date}T12:00:00`),
-      image: req.file ? `/uploads/${req.file.filename}` : "",
+    const news = await News.find().sort({
+      date: -1,
     });
-
-    await news.save();
 
     res.json(news);
   } catch (err) {
@@ -28,43 +21,100 @@ router.post("/", auth, upload.single("image"), async (req, res) => {
   }
 });
 
-// UPDATE NEWS
-router.put("/:id", auth, upload.single("image"), async (req, res) => {
-  try {
-    const updateData = {
-      title: req.body.title,
-      content: req.body.content,
-      date: new Date(`${req.body.date}T12:00:00`),
-    };
+// CREATE NEWS
 
-    // Only replace the image if a new one was uploaded
-    if (req.file) {
-      updateData.image = `/uploads/${req.file.filename}`;
+router.post(
+  "/",
+  auth,
+  upload.single("image"),
+
+  async (req, res) => {
+    try {
+      const news = new News({
+        title: req.body.title,
+
+        content: req.body.content,
+
+        date: new Date(`${req.body.date}T12:00:00`),
+
+        // CHANGED TO CLOUDINARY
+
+        image: req.file ? req.file.path : "",
+      });
+
+      await news.save();
+
+      res.json(news);
+    } catch (err) {
+      res.status(500).json({
+        message: err.message,
+      });
     }
+  },
+);
 
-    const updated = await News.findByIdAndUpdate(req.params.id, updateData, {
-      new: true,
-    });
+// UPDATE NEWS
 
-    res.json(updated);
-  } catch (err) {
-    res.status(500).json({
-      message: err.message,
-    });
-  }
-});
+router.put(
+  "/:id",
+
+  auth,
+
+  upload.single("image"),
+
+  async (req, res) => {
+    try {
+      const updateData = {
+        title: req.body.title,
+
+        content: req.body.content,
+
+        date: new Date(`${req.body.date}T12:00:00`),
+      };
+
+      // ONLY UPDATE IMAGE IF NEW IMAGE UPLOADED
+
+      if (req.file) {
+        updateData.image = req.file.path;
+      }
+
+      const updated = await News.findByIdAndUpdate(
+        req.params.id,
+
+        updateData,
+
+        {
+          new: true,
+        },
+      );
+
+      res.json(updated);
+    } catch (err) {
+      res.status(500).json({
+        message: err.message,
+      });
+    }
+  },
+);
 
 // DELETE NEWS
-router.delete("/:id", async (req, res) => {
-  try {
-    await News.findByIdAndDelete(req.params.id);
 
-    res.json({
-      message: "News deleted successfully",
-    });
-  } catch (err) {
-    res.status(500).json({ message: err.message });
-  }
-});
+router.delete(
+  "/:id",
+
+  async (req, res) => {
+    try {
+      await News.findByIdAndDelete(req.params.id);
+
+      res.json({
+        message: "News deleted successfully",
+      });
+    } catch (err) {
+      res.status(500).json({
+        message: err.message,
+      });
+    }
+  },
+);
 
 export default router;

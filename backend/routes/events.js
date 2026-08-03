@@ -28,7 +28,7 @@ router.post("/", upload.single("image"), async (req, res) => {
 
       category: req.body.category,
 
-      image: req.file ? `/uploads/${req.file.filename}` : "",
+      image: req.file ? req.file.path : "",
     });
 
     await event.save();
@@ -42,17 +42,78 @@ router.post("/", upload.single("image"), async (req, res) => {
 });
 
 // UPDATE EVENT
-router.put("/:id", async (req, res) => {
-  try {
-    const updated = await Event.findByIdAndUpdate(req.params.id, req.body, {
-      new: true,
-    });
+// UPDATE EVENT
+router.put(
+  "/:id",
+  upload.single("image"),
 
-    res.json(updated);
-  } catch (err) {
-    res.status(500).json({ message: err.message });
+  async (req, res) => {
+
+    try {
+
+
+      const update = {
+
+        title: req.body.title,
+
+        description: req.body.description,
+
+        date: req.body.date,
+
+        location: req.body.location,
+
+        startTime: req.body.startTime,
+
+        endTime: req.body.endTime,
+
+        category: req.body.category,
+
+      };
+
+
+
+      // Only replace image if a new one was uploaded
+
+      if (req.file) {
+
+        update.image = req.file.path;
+
+      }
+
+
+
+      const updated = await Event.findByIdAndUpdate(
+
+        req.params.id,
+
+        update,
+
+        {
+          new:true
+        }
+
+      );
+
+
+
+      res.json(updated);
+
+
+
+    } catch(err) {
+
+
+      res.status(500).json({
+
+        message:err.message
+
+      });
+
+
+    }
+
   }
-});
+);
 
 // DELETE EVENT
 router.delete("/:id", async (req, res) => {

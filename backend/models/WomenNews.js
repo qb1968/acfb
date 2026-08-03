@@ -7,17 +7,12 @@ const womenNewsSchema = new mongoose.Schema(
       required: true,
     },
 
-    content: {
+    content: String,
+
+    image: {
       type: String,
-      required: true,
+      default: "",
     },
-
-    date: {
-      type: Date,
-      default: Date.now,
-    },
-
-    image: String,
   },
   {
     timestamps: true,

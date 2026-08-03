@@ -1,31 +1,10 @@
 import express from "express";
-import multer from "multer";
 
 import YoungFarmerEvent from "../models/YoungFarmerEvent.js";
 
+import { upload } from "../middleware/upload.js";
+
 const router = express.Router();
-
-// ============================
-// MULTER IMAGE UPLOAD
-// ============================
-
-const storage = multer.diskStorage({
-  destination: (req, file, cb) => {
-    cb(null, "uploads/");
-  },
-
-  filename: (req, file, cb) => {
-    cb(null, Date.now() + "-" + file.originalname);
-  },
-});
-
-const upload = multer({
-  storage: storage,
-
-  limits: {
-    fileSize: 5 * 1024 * 1024,
-  },
-});
 
 // ============================
 // GET ALL EVENTS
@@ -33,11 +12,9 @@ const upload = multer({
 
 router.get("/", async (req, res) => {
   try {
-    const events = await YoungFarmerEvent.find()
-
-      .sort({
-        date: 1,
-      });
+    const events = await YoungFarmerEvent.find().sort({
+      date: 1,
+    });
 
     res.json(events);
   } catch (err) {
@@ -67,7 +44,9 @@ router.post(
 
         description: req.body.description,
 
-        image: req.file ? `/uploads/${req.file.filename}` : "",
+        // CLOUDINARY URL
+
+        image: req.file ? req.file.path : "",
       });
 
       res.status(201).json(event);
@@ -100,10 +79,10 @@ router.put(
         description: req.body.description,
       };
 
-      // update image only if new image selected
+      // Only replace image when a new one is uploaded
 
       if (req.file) {
-        update.image = `/uploads/${req.file.filename}`;
+        update.image = req.file.path;
       }
 
       const event = await YoungFarmerEvent.findByIdAndUpdate(

@@ -2,15 +2,21 @@ import mongoose from "mongoose";
 
 const womenEventSchema = new mongoose.Schema(
   {
-    title: String,
-
-    description: String,
+    title: {
+      type: String,
+      required: true,
+    },
 
     date: Date,
 
     location: String,
 
-    image: String,
+    description: String,
+
+    image: {
+      type: String,
+      default: "",
+    },
   },
   {
     timestamps: true,
