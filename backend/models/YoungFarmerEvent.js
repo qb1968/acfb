@@ -1,13 +1,11 @@
 import mongoose from "mongoose";
 
-const schema = new mongoose.Schema(
+const youngFarmerEventSchema = new mongoose.Schema(
   {
     title: {
       type: String,
       required: true,
     },
-
-    description: String,
 
     date: {
       type: Date,
@@ -16,11 +14,16 @@ const schema = new mongoose.Schema(
 
     location: String,
 
-    image: String,
+    description: String,
+
+    image: {
+      type: String,
+      default: "",
+    },
   },
   {
     timestamps: true,
   },
 );
 
-export default mongoose.model("YoungFarmerEvent", schema);
+export default mongoose.model("YoungFarmerEvent", youngFarmerEventSchema);

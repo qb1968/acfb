@@ -1,22 +1,17 @@
 import mongoose from "mongoose";
 
-const schema = new mongoose.Schema(
+const youngFarmerNewsSchema = new mongoose.Schema(
   {
     title: {
       type: String,
       required: true,
     },
 
-    content: {
+    description: String,
+
+    image: {
       type: String,
-      required: true,
-    },
-
-    image: String,
-
-    date: {
-      type: Date,
-      default: Date.now,
+      default: "",
     },
   },
   {
@@ -24,4 +19,4 @@ const schema = new mongoose.Schema(
   },
 );
 
-export default mongoose.model("YoungFarmerNews", schema);
+export default mongoose.model("YoungFarmerNews", youngFarmerNewsSchema);
