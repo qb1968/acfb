@@ -3,149 +3,78 @@ import { Link } from "react-router-dom";
 
 export default function Navbar() {
   const [mobileOpen, setMobileOpen] = useState(false);
-
   const [dropdown, setDropdown] = useState(null);
 
   const toggleDropdown = (name) => {
     setDropdown(dropdown === name ? null : name);
   };
 
+  const closeMenu = () => {
+    setDropdown(null);
+    setMobileOpen(false);
+  };
+
   return (
-    <nav
-      className="
-      bg-white
-      shadow-md
-      sticky
-      top-0
-      z-50
-    "
-    >
-      <div
-        className="
-        max-w-7xl
-        mx-auto
-        px-6
-        py-4
-        flex
-        items-center
-        justify-between
-      "
-      >
+    
+    <nav className="bg-white shadow-md sticky top-0 z-50">
+      <div className="max-w-7xl mx-auto px-6 py-4 flex items-center justify-between">
         {/* LOGO */}
 
-        <Link
-          to="/"
-          className="
-            flex
-            items-center
-            gap-3
-          "
-        >
+        <Link to="/" onClick={closeMenu} className="flex items-center gap-3">
           <img
             src="/logo.jpg"
             alt="Farm Bureau"
-            className="
-              h-12
-              w-12
-              object-contain
-            "
+            className="h-12 w-12 object-contain"
           />
 
           <div>
-            <h1
-              className="
-              font-bold
-              text-primary
-              leading-none
-            "
-            >
+            <h1 className="font-bold text-primary leading-none">
               Alamance County
             </h1>
 
-            <p
-              className="
-              text-sm
-              text-gray-600
-            "
-            >
-              Farm Bureau
-            </p>
+            <p className="text-sm text-gray-600">Farm Bureau</p>
           </div>
         </Link>
 
-        {/* DESKTOP NAV */}
+        {/* DESKTOP */}
 
-        <div
-          className="
-          hidden
-          md:flex
-          items-center
-          gap-8
-          font-semibold
-        "
-        >
+        <div className="hidden md:flex items-center gap-8 font-semibold">
           <Link to="/" className="hover:text-primary">
             Home
           </Link>
 
-          {/* ABOUT DROPDOWN */}
+          {/* ABOUT */}
 
           <div className="relative">
             <button
               onClick={() => toggleDropdown("about")}
-              className="
-                hover:text-primary
-              "
+              className="hover:text-primary"
             >
               About ▾
             </button>
 
             {dropdown === "about" && (
-              <div
-                className="
-                  absolute
-                  top-10
-                  left-0
-                  bg-white
-                  shadow-xl
-                  rounded-xl
-                  p-4
-                  w-52
-                  z-50
-                "
-              >
+              <div className="absolute top-10 left-0 bg-white shadow-xl rounded-xl p-4 w-52 z-50">
                 <Link
                   to="/about"
-                  onClick={() => setDropdown(null)}
-                  className="
-                    block
-                    py-2
-                    hover:text-primary
-                  "
+                  onClick={closeMenu}
+                  className="block py-2 hover:text-primary"
                 >
                   About Us
                 </Link>
 
                 <Link
                   to="/officers"
-                  onClick={() => setDropdown(null)}
-                  className="
-                    block
-                    py-2
-                    hover:text-primary
-                  "
+                  onClick={closeMenu}
+                  className="block py-2 hover:text-primary"
                 >
                   Officers
                 </Link>
 
                 <Link
                   to="/membership"
-                  onClick={() => setDropdown(null)}
-                  className="
-                    block
-                    py-2
-                    hover:text-primary
-                  "
+                  onClick={closeMenu}
+                  className="block py-2 hover:text-primary"
                 >
                   Membership
                 </Link>
@@ -153,70 +82,42 @@ export default function Navbar() {
             )}
           </div>
 
-          {/* PROGRAMS DROPDOWN */}
+          {/* PROGRAMS */}
 
           <div className="relative">
             <button
               onClick={() => toggleDropdown("programs")}
-              className="
-                hover:text-primary
-              "
+              className="hover:text-primary"
             >
               Programs ▾
             </button>
 
             {dropdown === "programs" && (
-              <div
-                className="
-                  absolute
-                  top-10
-                  left-0
-                  bg-white
-                  shadow-xl
-                  rounded-xl
-                  p-4
-                  w-64
-                  z-50
-                "
-              >
+              <div className="absolute top-10 left-0 bg-white shadow-xl rounded-xl p-4 w-64 z-50">
                 <Link
                   to="/young-farmers"
-                  onClick={() => setDropdown(null)}
-                  className="
-                    block
-                    py-2
-                    hover:text-primary
-                  "
+                  onClick={closeMenu}
+                  className="block py-2 hover:text-primary"
                 >
                   Young Farmers & Ranchers
                 </Link>
 
                 <Link
                   to="/women"
-                  onClick={() => setDropdown(null)}
-                  className="
-                    block
-                    py-2
-                    hover:text-primary
-                  "
+                  onClick={closeMenu}
+                  className="block py-2 hover:text-primary"
                 >
                   Women's Committee
-                </Link>
-
-                <Link
-                  to="/community"
-                  onClick={() => setDropdown(null)}
-                  className="
-                    block
-                    py-2
-                    hover:text-primary
-                  "
-                >
-                  Community News
                 </Link>
               </div>
             )}
           </div>
+
+          {/* NEW MAIN NAV ITEM */}
+
+          <Link to="/community" className="hover:text-primary">
+            News
+          </Link>
 
           <Link to="/events" className="hover:text-primary">
             Events
@@ -235,10 +136,7 @@ export default function Navbar() {
 
         <button
           onClick={() => setMobileOpen(!mobileOpen)}
-          className="
-            md:hidden
-            text-3xl
-          "
+          className="md:hidden text-3xl"
         >
           ☰
         </button>
@@ -257,39 +155,47 @@ export default function Navbar() {
             space-y-4
           "
         >
-          <Link to="/" className="block">
+          <Link to="/" onClick={closeMenu} className="block">
             Home
           </Link>
 
-          <Link to="/about" className="block">
+          <Link to="/about" onClick={closeMenu} className="block">
             About
           </Link>
 
-          <Link to="/officers" className="block">
+          <Link to="/officers" onClick={closeMenu} className="block">
             Officers
           </Link>
 
-          <Link to="/membership" className="block">
+          <Link to="/membership" onClick={closeMenu} className="block">
             Membership
           </Link>
 
-          <Link to="/young-farmers" className="block">
+          <Link to="/young-farmers" onClick={closeMenu} className="block">
             Young Farmers & Ranchers
           </Link>
 
-          <Link to="/women" className="block">
+          <Link to="/women" onClick={closeMenu} className="block">
             Women's Committee
           </Link>
 
-          <Link to="/events" className="block">
+          <Link
+            to="/community"
+            onClick={closeMenu}
+            className="block font-semibold"
+          >
+            News
+          </Link>
+
+          <Link to="/events" onClick={closeMenu} className="block">
             Events
           </Link>
 
-          <Link to="/gallery" className="block">
+          <Link to="/gallery" onClick={closeMenu} className="block">
             Gallery
           </Link>
 
-          <Link to="/contact" className="block">
+          <Link to="/contact" onClick={closeMenu} className="block">
             Contact
           </Link>
         </div>

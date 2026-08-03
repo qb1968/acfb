@@ -40,7 +40,6 @@ export default function WomenEventsAdmin() {
   const handleChange = (e) => {
     setForm({
       ...form,
-
       [e.target.name]: e.target.value,
     });
   };
@@ -78,7 +77,6 @@ export default function WomenEventsAdmin() {
           {
             headers: {
               Authorization: `Bearer ${token}`,
-
               "Content-Type": "multipart/form-data",
             },
           },
@@ -92,7 +90,6 @@ export default function WomenEventsAdmin() {
           {
             headers: {
               Authorization: `Bearer ${token}`,
-
               "Content-Type": "multipart/form-data",
             },
           },
@@ -129,26 +126,30 @@ export default function WomenEventsAdmin() {
     });
 
     if (event.image) {
-      setPreview(`https://acfb.onrender.com${event.image}`);
+      setPreview(event.image);
     }
 
     setImage(null);
   };
 
   const deleteEvent = async (id) => {
-    if (!confirm("Delete this event?")) return;
+    if (!window.confirm("Delete this event?")) return;
 
-    await axios.delete(
-      `${API}/${id}`,
+    try {
+      await axios.delete(
+        `${API}/${id}`,
 
-      {
-        headers: {
-          Authorization: `Bearer ${token}`,
+        {
+          headers: {
+            Authorization: `Bearer ${token}`,
+          },
         },
-      },
-    );
+      );
 
-    loadEvents();
+      loadEvents();
+    } catch (err) {
+      console.error(err);
+    }
   };
 
   const clearForm = () => {
@@ -175,14 +176,25 @@ export default function WomenEventsAdmin() {
 
       <form
         onSubmit={saveEvent}
-        className="bg-white rounded-2xl shadow-lg p-6 space-y-5"
+        className="
+          bg-white
+          rounded-2xl
+          shadow-lg
+          p-6
+          space-y-5
+        "
       >
         <input
           name="title"
           placeholder="Event Title"
           value={form.title}
           onChange={handleChange}
-          className="w-full border p-3 rounded-lg"
+          className="
+            w-full
+            border
+            p-3
+            rounded-lg
+          "
           required
         />
 
@@ -191,7 +203,13 @@ export default function WomenEventsAdmin() {
           placeholder="Event Description"
           value={form.description}
           onChange={handleChange}
-          className="w-full border p-3 rounded-lg h-32"
+          className="
+            w-full
+            border
+            p-3
+            rounded-lg
+            h-32
+          "
         />
 
         <input
@@ -199,7 +217,12 @@ export default function WomenEventsAdmin() {
           name="date"
           value={form.date}
           onChange={handleChange}
-          className="w-full border p-3 rounded-lg"
+          className="
+            w-full
+            border
+            p-3
+            rounded-lg
+          "
           required
         />
 
@@ -209,7 +232,11 @@ export default function WomenEventsAdmin() {
             name="startTime"
             value={form.startTime}
             onChange={handleChange}
-            className="border p-3 rounded-lg"
+            className="
+              border
+              p-3
+              rounded-lg
+            "
           />
 
           <input
@@ -217,7 +244,11 @@ export default function WomenEventsAdmin() {
             name="endTime"
             value={form.endTime}
             onChange={handleChange}
-            className="border p-3 rounded-lg"
+            className="
+              border
+              p-3
+              rounded-lg
+            "
           />
         </div>
 
@@ -226,14 +257,24 @@ export default function WomenEventsAdmin() {
           placeholder="Location"
           value={form.location}
           onChange={handleChange}
-          className="w-full border p-3 rounded-lg"
+          className="
+            w-full
+            border
+            p-3
+            rounded-lg
+          "
         />
 
         <select
           name="category"
           value={form.category}
           onChange={handleChange}
-          className="w-full border p-3 rounded-lg"
+          className="
+            w-full
+            border
+            p-3
+            rounded-lg
+          "
         >
           <option>Meeting</option>
 
@@ -248,15 +289,37 @@ export default function WomenEventsAdmin() {
           type="file"
           accept="image/*"
           onChange={handleImage}
-          className="w-full border p-3 rounded-lg"
+          className="
+            w-full
+            border
+            p-3
+            rounded-lg
+          "
         />
 
         {preview && (
-          <img src={preview} className="w-64 h-40 object-cover rounded-xl" />
+          <img
+            src={preview}
+            alt="Preview"
+            className="
+              w-64
+              h-40
+              object-cover
+              rounded-xl
+            "
+          />
         )}
 
         <div className="flex gap-3">
-          <button className="bg-primary text-white px-6 py-3 rounded-lg">
+          <button
+            className="
+              bg-primary
+              text-white
+              px-6
+              py-3
+              rounded-lg
+            "
+          >
             {editing ? "Update Event" : "Save Event"}
           </button>
 
@@ -264,7 +327,12 @@ export default function WomenEventsAdmin() {
             <button
               type="button"
               onClick={clearForm}
-              className="border px-6 py-3 rounded-lg"
+              className="
+                border
+                px-6
+                py-3
+                rounded-lg
+              "
             >
               Cancel
             </button>
@@ -279,12 +347,25 @@ export default function WomenEventsAdmin() {
           {events.map((event) => (
             <div
               key={event._id}
-              className="bg-white rounded-2xl shadow p-5 flex gap-6"
+              className="
+                bg-white
+                rounded-2xl
+                shadow
+                p-5
+                flex
+                gap-6
+              "
             >
               {event.image && (
                 <img
-                  src={`https://acfb.onrender.com${event.image}`}
-                  className="w-40 h-28 object-cover rounded-xl"
+                  src={event.image}
+                  alt={event.title}
+                  className="
+                    w-40
+                    h-28
+                    object-cover
+                    rounded-xl
+                  "
                 />
               )}
 
@@ -298,7 +379,7 @@ export default function WomenEventsAdmin() {
                 <p>📍 {event.location}</p>
 
                 <p>
-                  ⏰ {event.startTime}-{event.endTime}
+                  ⏰ {event.startTime} - {event.endTime}
                 </p>
 
                 <p className="mt-3">{event.description}</p>
@@ -307,14 +388,26 @@ export default function WomenEventsAdmin() {
               <div className="flex flex-col gap-3">
                 <button
                   onClick={() => editEvent(event)}
-                  className="bg-blue-600 text-white px-4 py-2 rounded-lg"
+                  className="
+                    bg-blue-600
+                    text-white
+                    px-4
+                    py-2
+                    rounded-lg
+                  "
                 >
                   Edit
                 </button>
 
                 <button
                   onClick={() => deleteEvent(event._id)}
-                  className="bg-red-600 text-white px-4 py-2 rounded-lg"
+                  className="
+                    bg-red-600
+                    text-white
+                    px-4
+                    py-2
+                    rounded-lg
+                  "
                 >
                   Delete
                 </button>

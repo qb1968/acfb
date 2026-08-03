@@ -12,6 +12,18 @@ export default function Women() {
     loadWomenData();
   }, []);
 
+  const imageUrl = (image) => {
+    if (!image) return "";
+
+    // Cloudinary URL
+    if (image.startsWith("http")) {
+      return image;
+    }
+
+    // Old uploads fallback
+    return `${API}${image}`;
+  };
+
   const loadWomenData = async () => {
     try {
       const membersRes = await axios.get(`${API}/api/women-members`);
@@ -34,11 +46,23 @@ export default function Women() {
     <div className="bg-gray-50 min-h-screen">
       {/* HERO */}
 
-      <section className="relative bg-[url('/farm.png')] bg-cover bg-center h-[35vh] flex items-center">
+      <section
+        className="
+        relative
+        bg-[url('/farm.png')]
+        bg-cover
+        bg-center
+        h-[35vh]
+        flex
+        items-center
+        "
+      >
         <div className="absolute inset-0 bg-black/70"></div>
 
         <div className="relative z-10 max-w-7xl mx-auto px-6 text-white">
-          <h1 className="text-4xl md:text-5xl font-bold">Women's Leadership Committee</h1>
+          <h1 className="text-4xl md:text-5xl font-bold">
+            Women's Leadership Committee
+          </h1>
 
           <p className="mt-3 text-lg text-gray-200 max-w-2xl">
             Supporting agriculture, leadership, education, and community
@@ -56,9 +80,9 @@ export default function Women() {
           </h2>
 
           <p className="text-gray-600 leading-relaxed">
-            The Women's Leadership Committee provides opportunities for women involved in
-            agriculture to develop leadership skills, support local programs,
-            and strengthen our farming community.
+            The Women's Leadership Committee provides opportunities for women
+            involved in agriculture to develop leadership skills, support local
+            programs, and strengthen our farming community.
           </p>
         </div>
       </section>
@@ -74,13 +98,28 @@ export default function Women() {
           {members.map((member) => (
             <div
               key={member._id}
-              className="bg-white rounded-2xl shadow-lg p-6 text-center hover:-translate-y-1 transition"
+              className="
+              bg-white
+              rounded-2xl
+              shadow-lg
+              p-6
+              text-center
+              hover:-translate-y-1
+              transition
+              "
             >
               {member.image && (
                 <img
-                  src={`${API}${member.image}`}
+                  src={imageUrl(member.image)}
                   alt={member.name}
-                  className="w-32 h-32 rounded-full mx-auto object-cover mb-4"
+                  className="
+                  w-32
+                  h-32
+                  rounded-full
+                  mx-auto
+                  object-cover
+                  mb-4
+                  "
                 />
               )}
 
@@ -99,7 +138,7 @@ export default function Women() {
       {/* NEWS */}
 
       <section className="max-w-7xl mx-auto px-6 pb-12">
-        <h2 className="text-3xl font-bold text-primary mb-8 text-center">
+        <h2 className="text-3xl font-bold text-primary text-center mb-8">
           Latest News
         </h2>
 
@@ -107,13 +146,22 @@ export default function Women() {
           {news.map((item) => (
             <div
               key={item._id}
-              className="bg-white rounded-2xl shadow-lg overflow-hidden"
+              className="
+              bg-white
+              rounded-2xl
+              shadow-lg
+              overflow-hidden
+              "
             >
               {item.image && (
                 <img
-                  src={`${API}${item.image}`}
+                  src={imageUrl(item.image)}
                   alt={item.title}
-                  className="w-full h-48 object-cover"
+                  className="
+                  w-full
+                  h-48
+                  object-cover
+                  "
                 />
               )}
 
@@ -124,7 +172,9 @@ export default function Women() {
                   {item.date && new Date(item.date).toLocaleDateString()}
                 </p>
 
-                <p className="text-gray-600 mt-3">{item.content}</p>
+                <p className="text-gray-600 mt-3">
+                  {item.content || item.description}
+                </p>
               </div>
             </div>
           ))}
@@ -134,28 +184,50 @@ export default function Women() {
       {/* EVENTS */}
 
       <section className="max-w-7xl mx-auto px-6 pb-16">
-        <h2 className="text-3xl font-bold text-primary mb-8 text-center">
+        <h2 className="text-3xl font-bold text-primary text-center mb-8">
           Upcoming Events
         </h2>
 
         <div className="grid md:grid-cols-3 gap-6">
           {events.map((event) => (
-            <div key={event._id} className="bg-white rounded-2xl shadow-lg p-6">
-              <h3 className="text-xl font-bold text-primary">{event.title}</h3>
+            <div
+              key={event._id}
+              className="
+              bg-white
+              rounded-2xl
+              shadow-lg
+              overflow-hidden
+              "
+            >
+              {event.image && (
+                <img
+                  src={imageUrl(event.image)}
+                  alt={event.title}
+                  className="
+                  w-full
+                  h-48
+                  object-cover
+                  "
+                />
+              )}
 
-              <p className="mt-3">
-                📅 {event.date && new Date(event.date).toLocaleDateString()}
-              </p>
+              <div className="p-6">
+                <h3 className="text-xl font-bold text-primary">
+                  {event.title}
+                </h3>
 
-              <p className="mt-2">
-                ⏰ {event.startTime}
-                {" - "}
-                {event.endTime}
-              </p>
+                <p className="mt-3">
+                  📅 {event.date && new Date(event.date).toLocaleDateString()}
+                </p>
 
-              <p className="mt-2">📍 {event.location}</p>
+                <p className="mt-2">
+                  ⏰ {event.startTime} - {event.endTime}
+                </p>
 
-              <p className="mt-3 text-gray-600">{event.description}</p>
+                <p className="mt-2">📍 {event.location}</p>
+
+                <p className="mt-3 text-gray-600">{event.description}</p>
+              </div>
             </div>
           ))}
         </div>

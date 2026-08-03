@@ -31,32 +31,156 @@ export default function YoungFarmersCard() {
 
       setEvents(eventsRes.data);
     } catch (err) {
-      console.log(err);
+      console.error("Young Farmers loading error:", err);
     }
   };
 
+  const latestNews = news[0];
+
+  const nextEvent = events[0];
+
   return (
     <Link to="/young-farmers">
-      <div className="bg-white/10 backdrop-blur-md border border-white/20 rounded-2xl p-5 hover:bg-white/20 transition shadow-lg h-full">
-        <h3 className="font-bold text-lg mb-3">Young Farmers & Ranchers</h3>
+      <div
+        className="
+          bg-white
+          rounded-3xl
+          overflow-hidden
+          shadow-xl
+          border
+          border-gray-200
+          hover:shadow-2xl
+          hover:-translate-y-2
+          transition-all
+          duration-300
+          h-full
+        "
+      >
+        {/* GREEN ACCENT */}
 
-        <p className="text-sm text-gray-200">
-          👨‍🌾 {members.length} Committee Members
-        </p>
+        <div className="h-2 bg-green-700"></div>
 
-        {news.length > 0 && (
-          <p className="text-sm text-gray-200 mt-2">
-            📰 Latest: {news[0].title}
-          </p>
-        )}
+        {/* HEADER */}
 
-        {events.length > 0 && (
-          <p className="text-sm text-gray-200 mt-2">
-            📅 Next: {events[0].title}
-          </p>
-        )}
+        <div className="bg-green-700 px-6 py-5">
+          <div className="flex items-center gap-3">
+            <div
+              className="
+                bg-white/20
+                h-12
+                w-12
+                rounded-full
+                flex
+                items-center
+                justify-center
+                text-2xl
+              "
+            >
+              🌱
+            </div>
 
-        <p className="text-sm mt-4 text-white font-semibold">Learn More →</p>
+            <div>
+              <h3 className="text-white text-xl font-bold">
+                Young Farmers & Ranchers
+              </h3>
+
+              <p className="text-green-100 text-sm">
+                Leadership • Education • Agriculture
+              </p>
+            </div>
+          </div>
+        </div>
+
+        {/* BODY */}
+
+        <div className="p-6 space-y-5">
+          {/* MEMBER COUNT */}
+
+          <div className="flex justify-between items-center">
+            <span className="text-gray-500 font-medium">Committee Members</span>
+
+            <span
+              className="
+                bg-green-100
+                text-green-700
+                font-bold
+                px-3
+                py-1
+                rounded-full
+              "
+            >
+              {members.length}
+            </span>
+          </div>
+
+          {/* NEWS */}
+
+          {latestNews && (
+            <div>
+              <p className="text-sm text-gray-500 uppercase tracking-wide">
+                Latest News
+              </p>
+
+              <h4 className="font-bold text-gray-800 mt-1">
+                📰 {latestNews.title}
+              </h4>
+            </div>
+          )}
+
+          {/* EVENT */}
+
+          {nextEvent && (
+            <div>
+              <p className="text-sm text-gray-500 uppercase tracking-wide">
+                Upcoming Event
+              </p>
+
+              <h4 className="font-bold text-gray-800 mt-1">
+                📅 {nextEvent.title}
+              </h4>
+            </div>
+          )}
+
+          {/* EMPTY */}
+
+          {!latestNews && !nextEvent && (
+            <p className="text-gray-500">
+              Growing our next generation of agricultural leaders.
+            </p>
+          )}
+
+          {/* FOOTER */}
+
+          <div className="border-t pt-5">
+            <div className="flex items-center justify-between">
+              <span
+                className="
+                  font-semibold
+                  text-green-700
+                "
+              >
+                Learn More
+              </span>
+
+              <div
+                className="
+                  bg-green-700
+                  text-white
+                  rounded-full
+                  h-10
+                  w-10
+                  flex
+                  items-center
+                  justify-center
+                  hover:bg-green-800
+                  transition
+                "
+              >
+                →
+              </div>
+            </div>
+          </div>
+        </div>
       </div>
     </Link>
   );

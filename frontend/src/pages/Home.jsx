@@ -1,131 +1,291 @@
 import { Link } from "react-router-dom";
-import { useEffect, useState } from "react";
-import axios from "axios";
-import UpcomingEvents from "../components/UpcomingEvents";
-import YoungFarmersCard from "../components/YoungFarmersCard";
-import WomenCard from "../components/WomenCard";
 import EventsCard from "../components/EventsCard";
 import NewsCard from "../components/NewsCard";
+import YoungFarmersCard from "../components/YoungFarmersCard";
+import WomenCard from "../components/WomenCard";
+import HomeUpdates from "../components/HomeUpdates";
 
 export default function Home() {
-  const [latestNews, setLatestNews] = useState(null);
-
-  useEffect(() => {
-    const fetchLatestNews = async () => {
-      try {
-        const res = await axios.get("https://acfb.onrender.com/api/news");
-
-        if (res.data.length > 0) {
-          setLatestNews(res.data[0]);
-        }
-      } catch (err) {
-        console.error("News loading error:", err);
-      }
-    };
-
-    fetchLatestNews();
-  }, []);
-
   return (
     <div className="min-h-screen bg-gray-50">
-      {/* HERO SECTION */}
-      <div className="min-h-screen bg-[url('/farm.png')] bg-cover bg-center relative flex items-center py-20">
-        {/* DARK OVERLAY */}
-        <div className="absolute inset-0 bg-black/80"></div>
+      {/* HERO */}
 
-        {/* MAIN CONTENT */}
-        <div className="relative z-10 w-full max-w-7xl mx-auto px-6 grid md:grid-cols-2 gap-10 items-center">
-          {/* LEFT SIDE */}
+      <section
+        className="
+relative
+min-h-[85vh]
+bg-[url('/farm.png')]
+bg-cover
+bg-center
+flex
+items-center
+"
+      >
+        <div
+          className="
+absolute
+inset-0
+bg-black/70
+"
+        />
+
+        <div
+          className="
+relative
+z-10
+max-w-7xl
+mx-auto
+px-6
+grid
+md:grid-cols-2
+gap-12
+items-center
+"
+        >
           <div className="text-white">
-            <h1 className="text-3xl sm:text-4xl md:text-5xl font-bold leading-tight">
-              Supporting Agriculture & Community
+            <h1
+              className="
+text-4xl
+md:text-6xl
+font-bold
+leading-tight
+"
+            >
+              Supporting Agriculture, Strengthening Communities
             </h1>
 
-            <p className="mt-4 text-gray-200 text-sm sm:text-base leading-relaxed max-w-xl">
-              Welcome to the Alamance County Farm Bureau website. We hope you
-              find our site useful and informative. We provide resources,
-              membership benefits, agricultural advocacy, and community support
-              for North Carolina residents and farming families.
+            <p
+              className="
+mt-6
+text-gray-200
+max-w-xl
+text-lg
+leading-relaxed
+"
+            >
+              Alamance County Farm Bureau supports farmers, families, and
+              communities through agriculture, education, advocacy, and local
+              programs.
             </p>
 
-            <div className="mt-6 flex flex-wrap gap-3">
+            <div
+              className="
+mt-8
+flex
+gap-4
+flex-wrap
+"
+            >
+              <Link
+                to="/membership"
+                className="
+bg-green-700
+px-7
+py-3
+rounded-full
+font-semibold
+hover:bg-green-800
+transition
+"
+              >
+                Join Today
+              </Link>
+
               <Link
                 to="/about"
-                className="border border-white text-white px-6 py-3 rounded-full hover:bg-white hover:text-primary transition"
+                className="
+border
+border-white
+px-7
+py-3
+rounded-full
+hover:bg-white
+hover:text-green-800
+transition
+"
               >
                 Learn More
               </Link>
-
-              <Link
-                to="/membership"
-                className="border border-white text-white px-6 py-3 rounded-full hover:bg-white hover:text-primary transition"
-              >
-                Membership
-              </Link>
-            </div>
-
-            {/* FEATURE CARDS */}
-            {/* FEATURE CARDS */}
-            <div className="mt-10 grid sm:grid-cols-2 md:grid-cols-2 gap-4">
-              {/* EVENTS */}
-              <EventsCard />
-
-              {/* COMMUNITY NEWS */}
-             <NewsCard />
-
-              <YoungFarmersCard />
-              <WomenCard/>
             </div>
           </div>
 
-          {/* RIGHT SIDE */}
-          <div className="space-y-5">
-            {/* MISSION CARD */}
-            <div className="bg-white/10 backdrop-blur-md border border-white/20 rounded-2xl p-6 text-white shadow-xl">
-              <h2 className="text-2xl font-bold mb-4">Our Mission</h2>
-
-              <p className="text-sm leading-relaxed text-gray-100">
-                To develop, foster, promote and protect programs for the general
-                welfare of farm people, including their economic, social, and
-                educational well-being, while supporting agriculture and rural
-                communities throughout North Carolina.
-              </p>
-            </div>
-
-            {/* IMAGE CARD */}
-            <div className="rounded-2xl overflow-hidden shadow-2xl border border-white/10">
-              <img
-                src="/cows.png"
-                alt="Farm"
-                className="w-full h-[320px] object-cover hover:scale-105 transition duration-500"
-              />
-            </div>
-
-            {/* QUICK LINKS */}
-            <div className="grid grid-cols-2 gap-4">
-              <Link to="/gallery">
-                <div className="bg-white rounded-2xl p-5 text-center shadow-lg hover:shadow-2xl transition hover:-translate-y-1">
-                  <h3 className="font-bold text-primary text-lg">Gallery</h3>
-
-                  <p className="text-sm text-gray-600 mt-1">
-                    View community and farm photos
-                  </p>
-                </div>
-              </Link>
-
-              <Link to="/contact">
-                <div className="bg-white rounded-2xl p-5 text-center shadow-lg hover:shadow-2xl transition hover:-translate-y-1">
-                  <h3 className="font-bold text-primary text-lg">Contact</h3>
-
-                  <p className="text-sm text-gray-600 mt-1">
-                    Get in touch with our office
-                  </p>
-                </div>
-              </Link>
-            </div>
+          <div>
+            <img
+              src="/cows.png"
+              alt="Farm"
+              className="
+rounded-3xl
+shadow-2xl
+border
+border-white/20
+"
+            />
           </div>
         </div>
-      </div>
+      </section>
+
+      {/* PROGRAM CARDS */}
+{/* 
+      <section
+        className="
+py-16
+bg-green-900
+"
+      >
+        <div
+          className="
+max-w-7xl
+mx-auto
+px-6
+"
+        >
+          <h2
+            className="
+text-3xl
+font-bold
+text-white
+mb-10
+text-center
+"
+          >
+            Stay Connected
+          </h2>
+
+          <div
+            className="
+grid
+sm:grid-cols-2
+lg:grid-cols-4
+gap-6
+"
+          >
+            <EventsCard />
+
+            <NewsCard />
+
+            <YoungFarmersCard />
+
+            <WomenCard />
+          </div>
+        </div>
+      </section> */}
+      <HomeUpdates />
+
+      {/* MISSION */}
+
+      <section
+        className="
+py-16
+"
+      >
+        <div
+          className="
+max-w-5xl
+mx-auto
+px-6
+text-center
+"
+        >
+          <h2
+            className="
+text-3xl
+font-bold
+text-green-800
+"
+          >
+            Our Mission
+          </h2>
+
+          <p
+            className="
+mt-6
+text-gray-700
+text-lg
+leading-relaxed
+"
+          >
+            To develop, foster, promote and protect programs for the general
+            welfare of farm people, including their economic, social, and
+            educational well-being, while supporting agriculture and rural
+            communities throughout North Carolina.
+          </p>
+        </div>
+      </section>
+
+      {/* QUICK LINKS */}
+
+      <section
+        className="
+pb-20
+"
+      >
+        <div
+          className="
+max-w-5xl
+mx-auto
+px-6
+grid
+md:grid-cols-2
+gap-6
+"
+        >
+          <Link to="/gallery">
+            <div
+              className="
+bg-white
+rounded-2xl
+shadow-lg
+p-8
+text-center
+hover:-translate-y-1
+transition
+"
+            >
+              <h3
+                className="
+text-2xl
+font-bold
+text-green-700
+"
+              >
+                Gallery
+              </h3>
+
+              <p className="mt-3 text-gray-600">
+                View photos from our agricultural and community events.
+              </p>
+            </div>
+          </Link>
+
+          <Link to="/contact">
+            <div
+              className="
+bg-white
+rounded-2xl
+shadow-lg
+p-8
+text-center
+hover:-translate-y-1
+transition
+"
+            >
+              <h3
+                className="
+text-2xl
+font-bold
+text-green-700
+"
+              >
+                Contact
+              </h3>
+
+              <p className="mt-3 text-gray-600">
+                Connect with Alamance County Farm Bureau.
+              </p>
+            </div>
+          </Link>
+        </div>
+      </section>
     </div>
   );
 }

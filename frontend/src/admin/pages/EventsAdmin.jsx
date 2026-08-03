@@ -1,6 +1,8 @@
 import { useEffect, useState } from "react";
 import axios from "axios";
 
+const API = "https://acfb.onrender.com/api/events";
+
 export default function EventsAdmin() {
   const [events, setEvents] = useState([]);
 
@@ -11,39 +13,45 @@ export default function EventsAdmin() {
   const [location, setLocation] = useState("");
   const [startTime, setStartTime] = useState("");
   const [endTime, setEndTime] = useState("");
+
   const [category, setCategory] = useState("Community Event");
+
   const [image, setImage] = useState(null);
+  const [preview, setPreview] = useState("");
 
   const [editingId, setEditingId] = useState(null);
 
-  // Load events
   useEffect(() => {
     fetchEvents();
   }, []);
 
   const fetchEvents = async () => {
     try {
-      const res = await axios.get("https://acfb.onrender.com/api/events");
+      const res = await axios.get(API);
 
       setEvents(res.data);
     } catch (err) {
-      console.error("Error loading events:", err);
+      console.error(err);
     }
   };
 
-  // Create or update event
   const handleSubmit = async (e) => {
     e.preventDefault();
 
     const formData = new FormData();
 
     formData.append("title", title);
+
     formData.append("description", description);
+
     formData.append("date", date);
 
     formData.append("location", location);
+
     formData.append("startTime", startTime);
+
     formData.append("endTime", endTime);
+
     formData.append("category", category);
 
     if (image) {
@@ -53,81 +61,114 @@ export default function EventsAdmin() {
     try {
       if (editingId) {
         await axios.put(
-          `https://acfb.onrender.com/api/events/${editingId}`,
+          `${API}/${editingId}`,
+
           formData,
+
+          {
+            headers: {
+              "Content-Type": "multipart/form-data",
+            },
+          },
         );
 
-        alert("Event Updated!");
+        alert("Event Updated");
       } else {
-        await axios.post("https://acfb.onrender.com/api/events", formData);
+        await axios.post(
+          API,
 
-        alert("Event Created!");
+          formData,
+
+          {
+            headers: {
+              "Content-Type": "multipart/form-data",
+            },
+          },
+        );
+
+        alert("Event Created");
       }
 
       clearForm();
+
       fetchEvents();
     } catch (err) {
       console.error(err);
+
       alert("Error saving event");
     }
   };
 
-  // Edit event
   const editEvent = (event) => {
     setEditingId(event._id);
 
     setTitle(event.title);
+
     setDescription(event.description);
-    setDate(event.date.substring(0, 10));
+
+    setDate(event.date ? event.date.substring(0, 10) : "");
 
     setLocation(event.location || "");
+
     setStartTime(event.startTime || "");
+
     setEndTime(event.endTime || "");
+
     setCategory(event.category || "Community Event");
+
+    if (event.image) {
+      setPreview(event.image);
+    }
   };
 
-  // Delete event
   const deleteEvent = async (id) => {
     if (!window.confirm("Delete this event?")) {
       return;
     }
 
     try {
-      await axios.delete(`https://acfb.onrender.com/api/events/${id}`);
+      await axios.delete(`${API}/${id}`);
 
       alert("Event Deleted");
 
       fetchEvents();
     } catch (err) {
       console.error(err);
-      alert("Delete failed");
     }
   };
 
-  // Clear form
   const clearForm = () => {
     setTitle("");
+
     setDescription("");
+
     setDate("");
 
     setLocation("");
+
     setStartTime("");
+
     setEndTime("");
+
     setCategory("Community Event");
+
     setImage(null);
+
+    setPreview("");
 
     setEditingId(null);
   };
 
   return (
     <div className="p-6">
-      <h1 className="text-2xl font-bold mb-6">
+      <h1 className="text-3xl font-bold mb-6">
         {editingId ? "Edit Event" : "Add Event"}
       </h1>
 
-      {/* EVENT FORM */}
-
-      <form onSubmit={handleSubmit} className="space-y-4 max-w-xl">
+      <form
+        onSubmit={handleSubmit}
+        className="bg-white shadow rounded-xl p-6 max-w-xl space-y-4"
+      >
         <input
           type="text"
           placeholder="Event Title"
@@ -191,8 +232,24 @@ export default function EventsAdmin() {
         <input
           type="file"
           accept="image/*"
-          onChange={(e) => setImage(e.target.files[0])}
+          onChange={(e) => {
+            const file = e.target.files[0];
+
+            setImage(file);
+
+            if (file) {
+              setPreview(URL.createObjectURL(file));
+            }
+          }}
         />
+
+        {preview && (
+          <img
+            src={preview}
+            alt="Preview"
+            className="w-48 h-32 object-cover rounded-lg"
+          />
+        )}
 
         <div className="flex gap-3">
           <button className="bg-primary text-white px-5 py-3 rounded-lg">
@@ -211,8 +268,6 @@ export default function EventsAdmin() {
         </div>
       </form>
 
-      {/* EVENT LIST */}
-
       <div className="mt-12">
         <h2 className="text-2xl font-bold mb-6">Existing Events</h2>
 
@@ -220,22 +275,20 @@ export default function EventsAdmin() {
           {events.map((event) => (
             <div
               key={event._id}
-              className="bg-white shadow rounded-xl p-5 flex justify-between items-center"
+              className="bg-white shadow rounded-xl p-5 flex justify-between"
             >
               <div>
                 {event.image && (
                   <img
-                    src={`https://acfb.onrender.com${event.image}`}
-                    alt=""
+                    src={event.image}
+                    alt={event.title}
                     className="w-32 h-20 object-cover rounded-lg mb-3"
                   />
                 )}
 
                 <h3 className="font-bold text-lg">{event.title}</h3>
 
-                <p className="text-gray-500">
-                  📅 {new Date(event.date).toLocaleDateString()}
-                </p>
+                <p>📅 {new Date(event.date).toLocaleDateString()}</p>
 
                 <p>📍 {event.location}</p>
 

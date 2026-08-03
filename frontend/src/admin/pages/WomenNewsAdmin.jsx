@@ -13,6 +13,7 @@ export default function WomenNewsAdmin() {
   });
 
   const [image, setImage] = useState(null);
+
   const [preview, setPreview] = useState("");
 
   const [editing, setEditing] = useState(null);
@@ -111,34 +112,38 @@ export default function WomenNewsAdmin() {
     setEditing(item._id);
 
     setForm({
-      title: item.title,
+      title: item.title || "",
 
-      content: item.content,
+      content: item.content || "",
 
       date: item.date ? item.date.substring(0, 10) : "",
     });
 
     if (item.image) {
-      setPreview(`https://acfb.onrender.com${item.image}`);
+      setPreview(item.image);
     }
 
     setImage(null);
   };
 
   const deleteNews = async (id) => {
-    if (!confirm("Delete this news item?")) return;
+    if (!window.confirm("Delete this news item?")) return;
 
-    await axios.delete(
-      `${API}/${id}`,
+    try {
+      await axios.delete(
+        `${API}/${id}`,
 
-      {
-        headers: {
-          Authorization: `Bearer ${token}`,
+        {
+          headers: {
+            Authorization: `Bearer ${token}`,
+          },
         },
-      },
-    );
+      );
 
-    loadNews();
+      loadNews();
+    } catch (err) {
+      console.error(err);
+    }
   };
 
   const clearForm = () => {
@@ -163,14 +168,25 @@ export default function WomenNewsAdmin() {
 
       <form
         onSubmit={saveNews}
-        className="bg-white rounded-2xl shadow-lg p-6 space-y-5"
+        className="
+          bg-white
+          rounded-2xl
+          shadow-lg
+          p-6
+          space-y-5
+        "
       >
         <input
           name="title"
           placeholder="News Title"
           value={form.title}
           onChange={handleChange}
-          className="w-full border p-3 rounded-lg"
+          className="
+            w-full
+            border
+            p-3
+            rounded-lg
+          "
           required
         />
 
@@ -179,7 +195,13 @@ export default function WomenNewsAdmin() {
           placeholder="News Content"
           value={form.content}
           onChange={handleChange}
-          className="w-full border p-3 rounded-lg h-40"
+          className="
+            w-full
+            border
+            p-3
+            rounded-lg
+            h-40
+          "
           required
         />
 
@@ -188,7 +210,12 @@ export default function WomenNewsAdmin() {
           name="date"
           value={form.date}
           onChange={handleChange}
-          className="w-full border p-3 rounded-lg"
+          className="
+            w-full
+            border
+            p-3
+            rounded-lg
+          "
           required
         />
 
@@ -196,18 +223,37 @@ export default function WomenNewsAdmin() {
           type="file"
           accept="image/*"
           onChange={handleImage}
-          className="w-full border p-3 rounded-lg"
+          className="
+            w-full
+            border
+            p-3
+            rounded-lg
+          "
         />
 
         {preview && (
           <img
             src={preview}
-            className="w-64 h-40 object-cover rounded-xl mt-4"
+            alt="Preview"
+            className="
+              w-64
+              h-40
+              object-cover
+              rounded-xl
+            "
           />
         )}
 
         <div className="flex gap-3">
-          <button className="bg-primary text-white px-6 py-3 rounded-lg">
+          <button
+            className="
+              bg-primary
+              text-white
+              px-6
+              py-3
+              rounded-lg
+            "
+          >
             {editing ? "Update News" : "Save News"}
           </button>
 
@@ -215,7 +261,12 @@ export default function WomenNewsAdmin() {
             <button
               type="button"
               onClick={clearForm}
-              className="border px-6 py-3 rounded-lg"
+              className="
+                border
+                px-6
+                py-3
+                rounded-lg
+              "
             >
               Cancel
             </button>
@@ -230,12 +281,25 @@ export default function WomenNewsAdmin() {
           {news.map((item) => (
             <div
               key={item._id}
-              className="bg-white rounded-2xl shadow p-5 flex gap-6"
+              className="
+                bg-white
+                rounded-2xl
+                shadow
+                p-5
+                flex
+                gap-6
+              "
             >
               {item.image && (
                 <img
-                  src={`https://acfb.onrender.com${item.image}`}
-                  className="w-40 h-28 object-cover rounded-xl"
+                  src={item.image}
+                  alt={item.title}
+                  className="
+                    w-40
+                    h-28
+                    object-cover
+                    rounded-xl
+                  "
                 />
               )}
 
@@ -252,14 +316,26 @@ export default function WomenNewsAdmin() {
               <div className="flex flex-col gap-3">
                 <button
                   onClick={() => editNews(item)}
-                  className="bg-blue-600 text-white px-4 py-2 rounded-lg"
+                  className="
+                    bg-blue-600
+                    text-white
+                    px-4
+                    py-2
+                    rounded-lg
+                  "
                 >
                   Edit
                 </button>
 
                 <button
                   onClick={() => deleteNews(item._id)}
-                  className="bg-red-600 text-white px-4 py-2 rounded-lg"
+                  className="
+                    bg-red-600
+                    text-white
+                    px-4
+                    py-2
+                    rounded-lg
+                  "
                 >
                   Delete
                 </button>

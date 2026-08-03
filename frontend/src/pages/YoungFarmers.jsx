@@ -12,6 +12,46 @@ export default function YoungFarmers() {
     loadData();
   }, []);
 
+  const imageUrl = (image) => {
+    if (!image) return "";
+
+    if (image.startsWith("http")) {
+      return image;
+    }
+
+    return `${API}${image}`;
+  };
+
+  // Make URLs clickable
+  const renderLinks = (text) => {
+    if (!text) return "";
+
+    const urlRegex = /(https?:\/\/[^\s]+)/g;
+
+    return text.split(urlRegex).map((part, index) => {
+      if (part.match(urlRegex)) {
+        return (
+          <a
+            key={index}
+            href={part}
+            target="_blank"
+            rel="noopener noreferrer"
+            className="
+              text-primary
+              underline
+              hover:text-orange-700
+              font-semibold
+            "
+          >
+            {part}
+          </a>
+        );
+      }
+
+      return part;
+    });
+  };
+
   const loadData = async () => {
     try {
       const membersRes = await axios.get(`${API}/api/young-farmers`);
@@ -22,11 +62,19 @@ export default function YoungFarmers() {
 
       setMembers(membersRes.data);
 
-      setNews(newsRes.data);
+      setNews(
+        newsRes.data
+          .sort((a, b) => new Date(b.createdAt) - new Date(a.createdAt))
+          .slice(0, 3),
+      );
 
-      setEvents(eventsRes.data);
+      setEvents(
+        eventsRes.data
+          .sort((a, b) => new Date(a.date) - new Date(b.date))
+          .slice(0, 3),
+      );
     } catch (err) {
-      console.log(err);
+      console.error("Loading Young Farmers data failed", err);
     }
   };
 
@@ -34,10 +82,29 @@ export default function YoungFarmers() {
     <div className="bg-gray-50 min-h-screen">
       {/* HERO */}
 
-      <section className="relative bg-[url('/farm.png')] bg-cover bg-center h-[35vh] flex items-center">
+      <section
+        className="
+          relative
+          bg-[url('/farm.png')]
+          bg-cover
+          bg-center
+          h-[35vh]
+          flex
+          items-center
+        "
+      >
         <div className="absolute inset-0 bg-black/70"></div>
 
-        <div className="relative z-10 max-w-6xl mx-auto px-6 text-white">
+        <div
+          className="
+            relative
+            z-10
+            max-w-6xl
+            mx-auto
+            px-6
+            text-white
+          "
+        >
           <h1 className="text-4xl md:text-5xl font-bold">
             Young Farmers & Ranchers
           </h1>
@@ -51,7 +118,14 @@ export default function YoungFarmers() {
       {/* ABOUT */}
 
       <section className="max-w-7xl mx-auto px-6 py-12">
-        <div className="bg-white rounded-2xl shadow-lg p-8">
+        <div
+          className="
+            bg-white
+            rounded-2xl
+            shadow-lg
+            p-8
+          "
+        >
           <h2 className="text-3xl font-bold text-primary mb-4">
             About Young Farmers & Ranchers
           </h2>
@@ -76,8 +150,31 @@ export default function YoungFarmers() {
           {members.map((member) => (
             <div
               key={member._id}
-              className="bg-white rounded-2xl shadow-lg p-6"
+              className="
+                bg-white
+                rounded-2xl
+                shadow-lg
+                p-6
+                text-center
+                hover:-translate-y-1
+                transition
+              "
             >
+              {member.image && (
+                <img
+                  src={imageUrl(member.image)}
+                  alt={member.name}
+                  className="
+                    w-32
+                    h-32
+                    rounded-full
+                    object-cover
+                    mx-auto
+                    mb-4
+                  "
+                />
+              )}
+
               <h3 className="text-xl font-bold text-primary">{member.name}</h3>
 
               <p className="font-semibold mt-2">{member.position}</p>
@@ -98,15 +195,40 @@ export default function YoungFarmers() {
         </h2>
 
         <div className="grid md:grid-cols-3 gap-6">
-          {news.slice(0, 3).map((item) => (
-            <div key={item._id} className="bg-white rounded-2xl shadow-lg p-6">
-              <h3 className="text-xl font-bold">{item.title}</h3>
+          {news.map((item) => (
+            <div
+              key={item._id}
+              className="
+                bg-white
+                rounded-2xl
+                shadow-lg
+                overflow-hidden
+              "
+            >
+              {item.image && (
+                <img
+                  src={imageUrl(item.image)}
+                  alt={item.title}
+                  className="
+                    w-full
+                    h-48
+                    object-cover
+                  "
+                />
+              )}
 
-              <p className="text-gray-500 text-sm mt-2">
-                {item.date && new Date(item.date).toLocaleDateString()}
-              </p>
+              <div className="p-6">
+                <h3 className="text-xl font-bold">{item.title}</h3>
 
-              <p className="text-gray-600 mt-3">{item.content}</p>
+                <p className="text-gray-500 text-sm mt-2">
+                  {item.createdAt &&
+                    new Date(item.createdAt).toLocaleDateString()}
+                </p>
+
+                <p className="text-gray-600 mt-3 leading-relaxed">
+                  {renderLinks(item.description)}
+                </p>
+              </div>
             </div>
           ))}
         </div>
@@ -120,17 +242,43 @@ export default function YoungFarmers() {
         </h2>
 
         <div className="grid md:grid-cols-3 gap-6">
-          {events.slice(0, 3).map((event) => (
-            <div key={event._id} className="bg-white rounded-2xl shadow-lg p-6">
-              <h3 className="text-xl font-bold">{event.title}</h3>
+          {events.map((event) => (
+            <div
+              key={event._id}
+              className="
+                bg-white
+                rounded-2xl
+                shadow-lg
+                overflow-hidden
+              "
+            >
+              {event.image && (
+                <img
+                  src={imageUrl(event.image)}
+                  alt={event.title}
+                  className="
+                    w-full
+                    h-48
+                    object-cover
+                  "
+                />
+              )}
 
-              <p className="text-gray-600 mt-2">
-                📅 {new Date(event.date).toLocaleDateString()}
-              </p>
+              <div className="p-6">
+                <h3 className="text-xl font-bold text-primary">
+                  {event.title}
+                </h3>
 
-              <p className="text-gray-600 mt-2">📍 {event.location}</p>
+                <p className="text-gray-600 mt-2">
+                  📅 {new Date(event.date).toLocaleDateString()}
+                </p>
 
-              <p className="mt-3">{event.description}</p>
+                <p className="text-gray-600 mt-2">📍 {event.location}</p>
+
+                <p className="mt-3 text-gray-700 leading-relaxed">
+                  {renderLinks(event.description)}
+                </p>
+              </div>
             </div>
           ))}
         </div>

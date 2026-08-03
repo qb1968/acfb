@@ -158,9 +158,9 @@ export default function EventsCalendar() {
 
               {selectedEvent.extendedProps.image && (
                 <img
-                  src={`https://acfb.onrender.com${selectedEvent.extendedProps.image}`}
+                  src={selectedEvent.extendedProps.image}
                   alt={selectedEvent.title}
-                  className="mt-5 w-full h-64 object-cover rounded-xl"
+                  className="mt-5 w-full h-64 object-cover rounded-xl shadow-lg"
                 />
               )}
             </div>

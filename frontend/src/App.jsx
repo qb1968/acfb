@@ -28,7 +28,7 @@
 // }
 
 import { Routes, Route } from "react-router-dom";
-
+import AnnouncementBar from "./components/AnnouncementBar";
 import Navbar from "./components/Navbar";
 import Footer from "./components/Footer";
 
@@ -63,6 +63,7 @@ import ProtectedRoute from "./admin/ProtectedRoute";
 /* SIMPLE WRAPPER (SAFE) */
 const Page = ({ children }) => (
   <>
+    <AnnouncementBar />
     <Navbar />
     <div className="min-h-screen">{children}</div>
     <Footer />

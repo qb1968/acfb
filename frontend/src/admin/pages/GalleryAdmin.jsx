@@ -2,25 +2,25 @@ import { useCallback, useEffect, useState } from "react";
 import { useDropzone } from "react-dropzone";
 import axios from "axios";
 
+const API = "https://acfb.onrender.com/api/gallery";
+
 export default function GalleryAdmin() {
   const [preview, setPreview] = useState(null);
   const [images, setImages] = useState([]);
 
-  // Load images when page opens
   useEffect(() => {
     fetchImages();
   }, []);
 
   const fetchImages = async () => {
     try {
-      const res = await axios.get("https://acfb.onrender.com/api/gallery");
+      const res = await axios.get(API);
       setImages(res.data);
     } catch (err) {
-      console.error(err);
+      console.error("Gallery load error:", err);
     }
   };
 
-  // Upload image
   const onDrop = useCallback(async (acceptedFiles) => {
     const file = acceptedFiles[0];
 
@@ -29,38 +29,45 @@ export default function GalleryAdmin() {
     setPreview(URL.createObjectURL(file));
 
     const formData = new FormData();
+
     formData.append("image", file);
 
     try {
-      await axios.post("https://acfb.onrender.com/api/gallery", formData);
+      await axios.post(API, formData, {
+        headers: {
+          "Content-Type": "multipart/form-data",
+        },
+      });
 
       alert("Image uploaded!");
 
-      // Refresh gallery list
       fetchImages();
+
+      setPreview(null);
     } catch (err) {
-      console.error(err);
+      console.error("Upload error:", err);
+
       alert("Upload failed");
     }
   }, []);
 
-  // Delete image
   const deleteImage = async (id) => {
     if (!window.confirm("Delete this image?")) return;
 
     try {
-      await axios.delete(`https://acfb.onrender.com/api/gallery/${id}`);
+      await axios.delete(`${API}/${id}`);
 
-      // Refresh gallery
       fetchImages();
     } catch (err) {
       console.error(err);
+
       alert("Delete failed");
     }
   };
 
   const { getRootProps, getInputProps, isDragActive } = useDropzone({
     onDrop,
+
     accept: {
       "image/*": [],
     },
@@ -71,13 +78,23 @@ export default function GalleryAdmin() {
       <h1 className="text-3xl font-bold mb-6">Gallery Upload</h1>
 
       {/* DROPZONE */}
+
       <div
         {...getRootProps()}
-        className={`border-2 border-dashed rounded-2xl p-10 text-center cursor-pointer transition ${
-          isDragActive
-            ? "border-accent bg-yellow-50"
-            : "border-gray-300 bg-white"
-        }`}
+        className={`
+          border-2
+          border-dashed
+          rounded-2xl
+          p-10
+          text-center
+          cursor-pointer
+          transition
+          ${
+            isDragActive
+              ? "border-orange-700 bg-orange-50"
+              : "border-gray-300 bg-white"
+          }
+        `}
       >
         <input {...getInputProps()} />
 
@@ -87,6 +104,7 @@ export default function GalleryAdmin() {
       </div>
 
       {/* PREVIEW */}
+
       {preview && (
         <div className="mt-6">
           <img
@@ -97,29 +115,54 @@ export default function GalleryAdmin() {
         </div>
       )}
 
-      {/* UPLOADED IMAGES */}
+      {/* IMAGES */}
+
       <div className="mt-10">
         <h2 className="text-2xl font-bold mb-6">Uploaded Images</h2>
 
         {images.length === 0 ? (
           <p className="text-gray-500">No uploaded images yet.</p>
         ) : (
-          <div className="grid sm:grid-cols-2 md:grid-cols-3 lg:grid-cols-4 gap-6">
+          <div
+            className="
+              grid
+              sm:grid-cols-2
+              md:grid-cols-3
+              lg:grid-cols-4
+              gap-6
+            "
+          >
             {images.map((img) => (
               <div
                 key={img._id}
-                className="bg-white rounded-2xl shadow-lg overflow-hidden"
+                className="
+                    bg-white
+                    rounded-2xl
+                    shadow-lg
+                    overflow-hidden
+                  "
               >
                 <img
-                  src={`https://acfb.onrender.com${img.image}`}
+                  src={img.image}
                   alt="Gallery"
-                  className="w-full h-56 object-cover"
+                  className="
+                      w-full
+                      h-56
+                      object-cover
+                    "
                 />
 
                 <div className="p-4">
                   <button
                     onClick={() => deleteImage(img._id)}
-                    className="w-full bg-red-600 hover:bg-red-700 text-white py-2 rounded-lg transition"
+                    className="
+                        w-full
+                        bg-red-600
+                        hover:bg-red-700
+                        text-white
+                        py-2
+                        rounded-lg
+                      "
                   >
                     Delete Image
                   </button>
