@@ -12,14 +12,30 @@ const youngFarmerEventSchema = new mongoose.Schema(
       required: true,
     },
 
-    location: String,
+    startTime: {
+      type: String,
+      default: "",
+    },
 
-    description: String,
+    endTime: {
+      type: String,
+      default: "",
+    },
+
+    location: {
+      type: String,
+      default: "",
+    },
+
+    description: {
+      type: String,
+      default: "",
+    },
 
     image: {
       type: String,
       default: "",
-    }
+    },
   },
   {
     timestamps: true,
