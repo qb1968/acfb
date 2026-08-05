@@ -10,6 +10,7 @@ import interactionPlugin from "@fullcalendar/interaction";
 export default function EventsCalendar() {
   const [events, setEvents] = useState([]);
   const [selectedEvent, setSelectedEvent] = useState(null);
+  
 
   useEffect(() => {
     fetchEvents();
@@ -75,21 +76,23 @@ export default function EventsCalendar() {
   };
 
   return (
-    <div className="bg-gray-50 min-h-screen py-12 px-6">
+    <div className="bg-gray-50 min-h-screen py-6 md:py-12 px-3 sm:px-4 md:px-6">
       <div className="max-w-7xl mx-auto">
         {/* HEADER */}
 
-        <div className="text-center mb-10">
-          <h1 className="text-4xl font-bold text-primary">Events Calendar</h1>
+        <div className="text-center mb-6 md:mb-10">
+          <h1 className="text-3xl md:text-4xl font-bold text-primary">
+            Events Calendar
+          </h1>
 
-          <p className="text-gray-600 mt-2">
+          <p className="text-gray-600 mt-2 text-sm md:text-base">
             View upcoming Farm Bureau events and programs.
           </p>
         </div>
 
         {/* CALENDAR */}
 
-        <div className="bg-white rounded-2xl shadow-lg p-6">
+        <div className="bg-white rounded-2xl shadow-lg p-2 sm:p-4 md:p-6 overflow-x-auto">
           <FullCalendar
             plugins={[dayGridPlugin, timeGridPlugin, interactionPlugin]}
             initialView="dayGridMonth"
@@ -100,15 +103,20 @@ export default function EventsCalendar() {
               meridiem: "short",
             }}
             headerToolbar={{
-              left: "prev,next today",
-
+              left: "prev,next",
               center: "title",
-
-              right: "dayGridMonth,timeGridWeek",
+              right: "today dayGridMonth,timeGridWeek",
             }}
             events={calendarEvents}
             eventClick={handleEventClick}
             height="auto"
+            dayMaxEventRows={2}
+            fixedWeekCount={false}
+            expandRows={true}
+            eventDisplay="block"
+            contentHeight="auto"
+            events={calendarEvents}
+            eventClick={handleEventClick}
           />
         </div>
 
@@ -133,10 +141,11 @@ export default function EventsCalendar() {
                 bg-white
                 rounded-2xl
                 shadow-2xl
-                max-w-lg
+                max-w-xl
                 w-full
-                p-6
+                p-4 sm:p-6
                 relative
+                max-h-[90vh] overflow-y-auto
               "
               onClick={(e) => e.stopPropagation()}
             >
@@ -214,7 +223,7 @@ export default function EventsCalendar() {
                   className="
                     mt-5
                     w-full
-                    h-64
+                    h-48 sm:h-56 md:h-64
                     object-cover
                     rounded-xl
                     shadow-lg
