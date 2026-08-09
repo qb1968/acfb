@@ -12,120 +12,122 @@ export default function Home() {
 
       <section
         className="
-relative
-min-h-[85vh]
-bg-[url('/farm.png')]
-bg-cover
-bg-center
-flex
-items-center
-"
+    relative
+    min-h-[85vh]
+    bg-[url('/farm.png')]
+    bg-cover
+    bg-center
+    flex
+    items-center
+  "
       >
-        <div
-          className="
-absolute
-inset-0
-bg-black/70
-"
-        />
+        {/* Overlay */}
+
+        <div className="absolute inset-0 bg-black/70" />
 
         <div
           className="
-relative
-z-10
-max-w-7xl
-mx-auto
-px-6
-grid
-md:grid-cols-2
-gap-12
-items-center
-"
+      relative
+      z-10
+      max-w-7xl
+      mx-auto
+      px-4
+      sm:px-6
+      grid
+      grid-cols-1
+      lg:grid-cols-2
+      gap-10
+      lg:gap-12
+      items-center
+      text-center
+      lg:text-left
+    "
         >
+          {/* Hero Text */}
+
           <div className="text-white">
             <h1
               className="
-text-4xl
-md:text-6xl
-font-bold
-leading-tight
-"
+          text-4xl
+          sm:text-5xl
+          lg:text-6xl
+          font-bold
+          leading-tight
+        "
             >
-              Supporting Agriculture, Strengthening Communities
+              Supporting Agriculture,
+              <br />
+              Strengthening Communities
             </h1>
 
             <p
               className="
-mt-6
-text-gray-200
-max-w-xl
-text-lg
-leading-relaxed
-"
+          mt-6
+          max-w-xl
+          mx-auto
+          lg:mx-0
+          text-base
+          sm:text-lg
+          text-gray-200
+          leading-relaxed
+        "
             >
               Alamance County Farm Bureau supports farmers, families, and
               communities through agriculture, education, advocacy, and local
               programs.
             </p>
 
+            {/* Button */}
+
             <div
               className="
-mt-8
-flex
-gap-4
-flex-wrap
-"
+          mt-8
+          flex
+          justify-center
+          lg:justify-start
+        "
             >
-              <Link
-                to="/membership"
-                className="
-bg-green-700
-px-7
-py-3
-rounded-full
-font-semibold
-hover:bg-green-800
-transition
-"
-              >
-                Join Today
-              </Link>
-
               <Link
                 to="/about"
                 className="
-border
-border-white
-px-7
-py-3
-rounded-full
-hover:bg-white
-hover:text-green-800
-transition
-"
+            bg-white
+            text-green-800
+            px-8
+            py-3
+            rounded-full
+            font-semibold
+            shadow-lg
+            hover:bg-green-100
+            transition
+          "
               >
-                Learn More
+                Learn More 
               </Link>
             </div>
           </div>
 
-          <div>
+          {/* Hero Image */}
+
+          <div className="hidden md:block">
             <img
               src="/cows.png"
               alt="Farm"
               className="
-rounded-3xl
-shadow-2xl
-border
-border-white/20
-"
+          rounded-3xl
+          shadow-2xl
+          border
+          border-white/20
+          w-full
+          max-w-xl
+          mx-auto
+        "
             />
           </div>
         </div>
       </section>
 
       {/* PROGRAM CARDS */}
-{/* 
+      {/* 
       <section
         className="
 py-16
@@ -283,6 +285,25 @@ text-green-700
                 Connect with Alamance County Farm Bureau.
               </p>
             </div>
+          </Link>
+        </div>
+      </section>
+      <section className="bg-green-800 py-16">
+        <div className="max-w-5xl mx-auto px-6 text-center text-white">
+          <h2 className="text-3xl font-bold">
+            Become Part of Our Farm Bureau Family
+          </h2>
+
+          <p className="mt-4 text-green-100">
+            Join today to support agriculture, strengthen our community, and
+            enjoy Farm Bureau member benefits.
+          </p>
+
+          <Link
+            to="/membership"
+            className="inline-block mt-8 bg-white text-green-800 px-8 py-3 rounded-full font-bold hover:scale-105 transition"
+          >
+            Become a Member
           </Link>
         </div>
       </section>

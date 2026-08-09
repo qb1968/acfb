@@ -1,30 +1,107 @@
-
-
 @tailwind base;
 @tailwind components;
 @tailwind utilities;
 
 
+/* GLOBAL */
+
+html {
+  scroll-behavior: smooth;
+}
+
 
 body {
   @apply bg-gray-50 text-gray-800 font-sans;
+  
+  overflow-x: hidden;
 }
 
-.container {
-  @apply max-w-7xl mx-auto px-6 sm:px-8 lg:px-12;
+
+/* IMAGES */
+
+img {
+  max-width: 100%;
+  height: auto;
 }
+
+
+
+/* CONTAINER */
+
+.container {
+  @apply max-w-7xl mx-auto px-4 sm:px-6 lg:px-12;
+}
+
+
+
+/* FULL CALENDAR */
 
 .fc {
   font-family: inherit;
 }
+
+
+/* Calendar title */
 
 .fc-toolbar-title {
   font-size: 1.5rem;
   font-weight: bold;
 }
 
+
+/* Calendar buttons */
+
+.fc-button {
+  @apply bg-green-700 border-green-700;
+}
+
+
+.fc-button:hover {
+  @apply bg-green-800;
+}
+
+
+
+/* Calendar events */
+
 .fc-event {
   cursor: pointer;
   border-radius: 8px;
   padding: 3px;
+}
+
+
+
+/* MOBILE CALENDAR */
+
+@media (max-width: 640px) {
+
+
+  .fc-toolbar {
+    display: flex;
+    flex-direction: column;
+    gap: 12px;
+  }
+
+
+  .fc-toolbar-chunk {
+    display: flex;
+    justify-content: center;
+  }
+
+
+  .fc-toolbar-title {
+    font-size: 1.25rem;
+  }
+
+
+  .fc-event-title {
+    font-size: .75rem;
+  }
+
+
+  .fc-daygrid-event {
+    white-space: normal;
+  }
+
 }

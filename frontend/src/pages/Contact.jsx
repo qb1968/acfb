@@ -29,7 +29,8 @@ export default function Contact() {
             >
               (336) 226-2477
             </a>
-
+            <p className="text-gray-700 font-bold mt-2">Spring Gates
+            </p>
             <p className="text-gray-500 mt-2">Monday–Friday</p>
           </div>
 
@@ -140,6 +141,8 @@ export default function Contact() {
                 800 N. Main Street
                 <br />
                 Graham, NC 27253
+                <br />
+                (336) 226-2477
               </p>
 
               <a
@@ -159,6 +162,8 @@ export default function Contact() {
                 209 N. Third Street
                 <br />
                 Mebane, NC 27302
+                <br />
+                (919) 563-3276
               </p>
 
               <a
@@ -178,6 +183,8 @@ export default function Contact() {
                 3047 S. Church Street
                 <br />
                 Burlington, NC 27215
+                <br />
+                (336) 584-9299
               </p>
 
               <a
