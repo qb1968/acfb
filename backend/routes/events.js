@@ -15,17 +15,14 @@ router.post("/", upload.single("image"), async (req, res) => {
   try {
     const event = new Event({
       title: req.body.title,
-
       description: req.body.description,
 
-      date: req.body.date,
+      // Store exactly YYYY-MM-DD
+      date: String(req.body.date).substring(0, 10),
 
       location: req.body.location,
-
       startTime: req.body.startTime,
-
       endTime: req.body.endTime,
-
       category: req.body.category,
 
       image: req.file ? req.file.path : "",
@@ -35,6 +32,8 @@ router.post("/", upload.single("image"), async (req, res) => {
 
     res.json(event);
   } catch (err) {
+    console.error("CREATE EVENT ERROR:", err);
+
     res.status(500).json({
       message: err.message,
     });
@@ -43,77 +42,39 @@ router.post("/", upload.single("image"), async (req, res) => {
 
 // UPDATE EVENT
 // UPDATE EVENT
-router.put(
-  "/:id",
-  upload.single("image"),
+router.put("/:id", upload.single("image"), async (req, res) => {
+  try {
+    const update = {
+      title: req.body.title,
+      description: req.body.description,
 
-  async (req, res) => {
+      // Store exactly YYYY-MM-DD
+      date: String(req.body.date).substring(0, 10),
 
-    try {
+      location: req.body.location,
+      startTime: req.body.startTime,
+      endTime: req.body.endTime,
+      category: req.body.category,
+    };
 
-
-      const update = {
-
-        title: req.body.title,
-
-        description: req.body.description,
-
-        date: req.body.date,
-
-        location: req.body.location,
-
-        startTime: req.body.startTime,
-
-        endTime: req.body.endTime,
-
-        category: req.body.category,
-
-      };
-
-
-
-      // Only replace image if a new one was uploaded
-
-      if (req.file) {
-
-        update.image = req.file.path;
-
-      }
-
-
-
-      const updated = await Event.findByIdAndUpdate(
-
-        req.params.id,
-
-        update,
-
-        {
-          new:true
-        }
-
-      );
-
-
-
-      res.json(updated);
-
-
-
-    } catch(err) {
-
-
-      res.status(500).json({
-
-        message:err.message
-
-      });
-
-
+    if (req.file) {
+      update.image = req.file.path;
     }
 
+    const updated = await Event.findByIdAndUpdate(req.params.id, update, {
+      new: true,
+      runValidators: true,
+    });
+
+    res.json(updated);
+  } catch (err) {
+    console.error("UPDATE EVENT ERROR:", err);
+
+    res.status(500).json({
+      message: err.message,
+    });
   }
-);
+});
 
 // DELETE EVENT
 router.delete("/:id", async (req, res) => {
