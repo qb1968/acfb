@@ -199,6 +199,122 @@ router.get("/admins", authenticateAdmin, async (req, res) => {
 
 /*
 |--------------------------------------------------------------------------
+| UPDATE ADMIN
+|--------------------------------------------------------------------------
+| Allows an authenticated admin to change another admin's email.
+|--------------------------------------------------------------------------
+*/
+
+router.put("/admins/:id", authenticateAdmin, async (req, res) => {
+  try {
+    const adminId = req.params.id;
+    const { email } = req.body;
+
+    if (!email) {
+      return res.status(400).json({
+        message: "Email is required",
+      });
+    }
+
+    const cleanEmail = email.toLowerCase().trim();
+
+    const admin = await Admin.findById(adminId);
+
+    if (!admin) {
+      return res.status(404).json({
+        message: "Admin not found",
+      });
+    }
+
+    const existingAdmin = await Admin.findOne({
+      email: cleanEmail,
+      _id: { $ne: adminId },
+    });
+
+    if (existingAdmin) {
+      return res.status(400).json({
+        message: "Another admin already uses this email",
+      });
+    }
+
+    admin.email = cleanEmail;
+
+    await admin.save();
+
+    res.json({
+      message: "Admin updated successfully",
+      admin: {
+        id: admin._id,
+        email: admin.email,
+      },
+    });
+  } catch (error) {
+    console.error("Update admin error:", error);
+
+    res.status(500).json({
+      message: "Error updating admin",
+    });
+  }
+});
+
+
+/*
+|--------------------------------------------------------------------------
+| CHANGE ADMIN PASSWORD
+|--------------------------------------------------------------------------
+| An authenticated admin can change another admin's password.
+|--------------------------------------------------------------------------
+*/
+
+router.put(
+  "/admins/:id/password",
+  authenticateAdmin,
+  async (req, res) => {
+    try {
+      const adminId = req.params.id;
+      const { password } = req.body;
+
+      if (!password) {
+        return res.status(400).json({
+          message: "New password is required",
+        });
+      }
+
+      if (password.length < 8) {
+        return res.status(400).json({
+          message: "Password must be at least 8 characters",
+        });
+      }
+
+      const admin = await Admin.findById(adminId);
+
+      if (!admin) {
+        return res.status(404).json({
+          message: "Admin not found",
+        });
+      }
+
+      const hashedPassword = await bcrypt.hash(password, 10);
+
+      admin.password = hashedPassword;
+
+      await admin.save();
+
+      res.json({
+        message: "Password changed successfully",
+      });
+    } catch (error) {
+      console.error("Change password error:", error);
+
+      res.status(500).json({
+        message: "Error changing password",
+      });
+    }
+  }
+);
+
+/*
+|--------------------------------------------------------------------------
 | DELETE ADMIN
 |--------------------------------------------------------------------------
 | Only authenticated admins can delete another admin.
