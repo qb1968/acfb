@@ -23,8 +23,15 @@ const app = express();
 // Middleware
 app.use(
   cors({
-    origin: ["http://localhost:5173", "https://acfb-three.vercel.app","https://www.acfarmbureau.com"],
+    origin: [
+      "http://localhost:5173",
+      "https://acfb-three.vercel.app",
+      "https://acfarmbureau.com",
+      "https://www.acfarmbureau.com",
+    ],
     credentials: true,
+    methods: ["GET", "POST", "PUT", "PATCH", "DELETE", "OPTIONS"],
+    allowedHeaders: ["Content-Type", "Authorization"],
   }),
 );
 app.use(express.json());
