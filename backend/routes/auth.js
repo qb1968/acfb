@@ -168,6 +168,80 @@ router.post("/create-admin", authenticateAdmin, async (req, res) => {
 
 /*
 |--------------------------------------------------------------------------
+| GET ALL ADMINS
+|--------------------------------------------------------------------------
+| Only authenticated admins can view the admin list.
+|--------------------------------------------------------------------------
+*/
+
+router.get("/admins", authenticateAdmin, async (req, res) => {
+  try {
+    const admins = await Admin.find({})
+      .select("_id email createdAt")
+      .sort({ createdAt: -1 });
+
+    res.json(
+      admins.map((admin) => ({
+        id: admin._id,
+        email: admin.email,
+        createdAt: admin.createdAt,
+        isCurrentAdmin: admin._id.toString() === req.admin._id.toString(),
+      })),
+    );
+  } catch (error) {
+    console.error("Get admins error:", error);
+
+    res.status(500).json({
+      message: "Error loading admins",
+    });
+  }
+});
+
+/*
+|--------------------------------------------------------------------------
+| DELETE ADMIN
+|--------------------------------------------------------------------------
+| Only authenticated admins can delete another admin.
+| An admin cannot delete their own account.
+|--------------------------------------------------------------------------
+*/
+
+router.delete("/admins/:id", authenticateAdmin, async (req, res) => {
+  try {
+    const adminId = req.params.id;
+
+    // Prevent deleting yourself
+    if (adminId === req.admin._id.toString()) {
+      return res.status(400).json({
+        message: "You cannot delete your own admin account",
+      });
+    }
+
+    const admin = await Admin.findById(adminId);
+
+    if (!admin) {
+      return res.status(404).json({
+        message: "Admin not found",
+      });
+    }
+
+    await Admin.findByIdAndDelete(adminId);
+
+    res.json({
+      message: "Admin deleted successfully",
+      id: adminId,
+    });
+  } catch (error) {
+    console.error("Delete admin error:", error);
+
+    res.status(500).json({
+      message: "Error deleting admin",
+    });
+  }
+});
+
+/*
+|--------------------------------------------------------------------------
 | GET CURRENT ADMIN
 |--------------------------------------------------------------------------
 */
