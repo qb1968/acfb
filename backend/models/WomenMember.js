@@ -5,18 +5,35 @@ const womenMemberSchema = new mongoose.Schema(
     name: {
       type: String,
       required: true,
+      trim: true,
     },
 
     title: {
       type: String,
       default: "Committee Member",
+      trim: true,
     },
 
-    location: String,
+    location: {
+      type: String,
+      default: "",
+      trim: true,
+    },
 
-    bio: String,
+    bio: {
+      type: String,
+      default: "",
+    },
 
-    image: String,
+    image: {
+      type: String,
+      default: "",
+    },
+
+    order: {
+      type: Number,
+      default: 99,
+    },
   },
   {
     timestamps: true,

@@ -107,9 +107,9 @@ router.post("/", upload.single("image"), async (req, res) => {
 try {
 const {
 name,
-position,
+title,
 location,
-description,
+bio,
 order,
 } = req.body;
 
@@ -130,9 +130,9 @@ if (req.file) {
 
 const member = new WomenMember({
   name: name.trim(),
-  position: position || "",
+  title:title || "",
   location: location || "",
-  description: description || "",
+  bio: bio || "",
   order: Number(order) || 99,
   image,
 });
@@ -176,9 +176,9 @@ req.params.id
 
   const {
     name,
-    position,
+    title,
     location,
-    description,
+    bio,
     order,
   } = req.body;
 
@@ -189,9 +189,9 @@ req.params.id
   }
 
   member.name = name.trim();
-  member.position = position || "";
+  member.title = title || "";
   member.location = location || "";
-  member.description = description || "";
+  member.bio = bio || "";
   member.order = Number(order) || 99;
 
   /* Replace image only if a new image was uploaded */
