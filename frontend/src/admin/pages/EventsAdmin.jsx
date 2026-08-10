@@ -1,21 +1,30 @@
+jsx
 import { useEffect, useState } from "react";
 import axios from "axios";
 import { formatTimeRange } from "../../utils/timeFormat";
 
 const API = "https://acfb.onrender.com/api/events";
 
+// --------------------------------------------------
+// FORMAT EVENT DATE
+// IMPORTANT: DO NOT USE new Date() HERE.
+// Event dates are calendar dates, not timestamps.
+// --------------------------------------------------
 const formatEventDate = (date) => {
   if (!date) return "";
 
-  const dateOnly = date.substring(0, 10);
+  const dateString = String(date);
 
-  const [year, month, day] = dateOnly.split("-");
+  // Get YYYY-MM-DD directly from the value
+  const match = dateString.match(/^(\d{4})-(\d{2})-(\d{2})/);
 
-  return new Date(
-    Number(year),
-    Number(month) - 1,
-    Number(day),
-  ).toLocaleDateString();
+  if (!match) {
+    return dateString;
+  }
+
+  const [, year, month, day] = match;
+
+  return `${month}/${day}/${year}`;
 };
 
 export default function EventsAdmin() {
@@ -36,6 +45,10 @@ export default function EventsAdmin() {
 
   const [editingId, setEditingId] = useState(null);
 
+  // --------------------------------------------------
+  // LOAD EVENTS
+  // --------------------------------------------------
+
   useEffect(() => {
     fetchEvents();
   }, []);
@@ -46,9 +59,13 @@ export default function EventsAdmin() {
 
       setEvents(res.data);
     } catch (err) {
-      console.error(err);
+      console.error("Error loading events:", err);
     }
   };
+
+  // --------------------------------------------------
+  // SAVE / UPDATE EVENT
+  // --------------------------------------------------
 
   const handleSubmit = async (e) => {
     e.preventDefault();
@@ -56,17 +73,15 @@ export default function EventsAdmin() {
     const formData = new FormData();
 
     formData.append("title", title);
-
     formData.append("description", description);
 
+    // IMPORTANT:
+    // Send the date exactly as YYYY-MM-DD.
     formData.append("date", date);
 
     formData.append("location", location);
-
     formData.append("startTime", startTime);
-
     formData.append("endTime", endTime);
-
     formData.append("category", category);
 
     if (image) {
@@ -75,66 +90,68 @@ export default function EventsAdmin() {
 
     try {
       if (editingId) {
-        await axios.put(
-          `${API}/${editingId}`,
-
-          formData,
-
-          {
-            headers: {
-              "Content-Type": "multipart/form-data",
-            },
+        await axios.put(`${API}/${editingId}`, formData, {
+          headers: {
+            "Content-Type": "multipart/form-data",
           },
-        );
+        });
 
         alert("Event Updated");
       } else {
-        await axios.post(
-          API,
-
-          formData,
-
-          {
-            headers: {
-              "Content-Type": "multipart/form-data",
-            },
+        await axios.post(API, formData, {
+          headers: {
+            "Content-Type": "multipart/form-data",
           },
-        );
+        });
 
         alert("Event Created");
       }
 
       clearForm();
-
-      fetchEvents();
+      await fetchEvents();
     } catch (err) {
-      console.error(err);
+      console.error("Error saving event:", err);
 
-      alert("Error saving event");
+      alert(
+        err.response?.data?.message ||
+          "Error saving event"
+      );
     }
   };
+
+  // --------------------------------------------------
+  // EDIT EVENT
+  // --------------------------------------------------
 
   const editEvent = (event) => {
     setEditingId(event._id);
 
-    setTitle(event.title);
+    setTitle(event.title || "");
+    setDescription(event.description || "");
 
-    setDescription(event.description);
-
-    setDate(event.date ? event.date.substring(0, 10) : "");
+    // Keep YYYY-MM-DD exactly as stored.
+    setDate(
+      event.date
+        ? String(event.date).substring(0, 10)
+        : ""
+    );
 
     setLocation(event.location || "");
-
     setStartTime(event.startTime || "");
-
     setEndTime(event.endTime || "");
 
-    setCategory(event.category || "Community Event");
+    setCategory(
+      event.category || "Community Event"
+    );
 
     if (event.image) {
       setPreview(event.image);
     }
   };
+
+  // --------------------------------------------------
+  // DELETE EVENT
+  // --------------------------------------------------
 
   const deleteEvent = async (id) => {
     if (!window.confirm("Delete this event?")) {
@@ -146,39 +163,49 @@ export default function EventsAdmin() {
 
       alert("Event Deleted");
 
-      fetchEvents();
+      await fetchEvents();
     } catch (err) {
-      console.error(err);
+      console.error("Delete event error:", err);
+
+      alert(
+        err.response?.data?.message ||
+          "Error deleting event"
+      );
     }
   };
 
+  // --------------------------------------------------
+  // CLEAR FORM
+  // --------------------------------------------------
+
   const clearForm = () => {
     setTitle("");
-
     setDescription("");
-
     setDate("");
-
     setLocation("");
-
     setStartTime("");
-
     setEndTime("");
-
     setCategory("Community Event");
-
     setImage(null);
-
     setPreview("");
-
     setEditingId(null);
   };
 
   return (
-    <div className="p-6">
-      <h1 className="text-3xl font-bold mb-6">
-        {editingId ? "Edit Event" : "Add Event"}
-      </h1>
+    <div>
+      {/* HEADER */}
+
+      <div className="mb-8">
+        <h1 className="text-3xl font-bold text-gray-800">
+          {editingId ? "Edit Event" : "Add Event"}
+        </h1>
+
+        <p className="text-gray-500 mt-2">
+          Create and manage Farm Bureau events.
+        </p>
+      </div>
+
+      {/* FORM */}
 
       <form
         onSubmit={handleSubmit}
@@ -190,27 +217,41 @@ export default function EventsAdmin() {
           value={title}
           onChange={(e) => setTitle(e.target.value)}
           className="w-full border p-3 rounded-lg"
+          required
         />
 
         <textarea
           placeholder="Description"
           value={description}
-          onChange={(e) => setDescription(e.target.value)}
+          onChange={(e) =>
+            setDescription(e.target.value)
+          }
           className="w-full border p-3 rounded-lg h-32"
         />
 
-        <input
-          type="date"
-          value={date}
-          onChange={(e) => setDate(e.target.value)}
-          className="w-full border p-3 rounded-lg"
-        />
+        {/* DATE */}
+
+        <div>
+          <label className="block font-semibold text-gray-700 mb-2">
+            Event Date
+          </label>
+
+          <input
+            type="date"
+            value={date}
+            onChange={(e) => setDate(e.target.value)}
+            className="w-full border p-3 rounded-lg"
+            required
+          />
+        </div>
 
         <input
           type="text"
           placeholder="Location"
           value={location}
-          onChange={(e) => setLocation(e.target.value)}
+          onChange={(e) =>
+            setLocation(e.target.value)
+          }
           className="w-full border p-3 rounded-lg"
         />
 
@@ -218,29 +259,32 @@ export default function EventsAdmin() {
           <input
             type="time"
             value={startTime}
-            onChange={(e) => setStartTime(e.target.value)}
+            onChange={(e) =>
+              setStartTime(e.target.value)
+            }
             className="border p-3 rounded-lg"
           />
 
           <input
             type="time"
             value={endTime}
-            onChange={(e) => setEndTime(e.target.value)}
+            onChange={(e) =>
+              setEndTime(e.target.value)
+            }
             className="border p-3 rounded-lg"
           />
         </div>
 
         <select
           value={category}
-          onChange={(e) => setCategory(e.target.value)}
+          onChange={(e) =>
+            setCategory(e.target.value)
+          }
           className="w-full border p-3 rounded-lg"
         >
           <option>Community Event</option>
-
           <option>Meeting</option>
-
           <option>Youth Program</option>
-
           <option>Training</option>
         </select>
 
@@ -248,12 +292,14 @@ export default function EventsAdmin() {
           type="file"
           accept="image/*"
           onChange={(e) => {
-            const file = e.target.files[0];
+            const file = e.target.files?.[0];
 
-            setImage(file);
+            setImage(file || null);
 
             if (file) {
-              setPreview(URL.createObjectURL(file));
+              setPreview(
+                URL.createObjectURL(file)
+              );
             }
           }}
         />
@@ -267,8 +313,13 @@ export default function EventsAdmin() {
         )}
 
         <div className="flex gap-3">
-          <button className="bg-primary text-white px-5 py-3 rounded-lg">
-            {editingId ? "Update Event" : "Save Event"}
+          <button
+            type="submit"
+            className="bg-primary text-white px-5 py-3 rounded-lg"
+          >
+            {editingId
+              ? "Update Event"
+              : "Save Event"}
           </button>
 
           {editingId && (
@@ -283,14 +334,18 @@ export default function EventsAdmin() {
         </div>
       </form>
 
+      {/* EXISTING EVENTS */}
+
       <div className="mt-12">
-        <h2 className="text-2xl font-bold mb-6">Existing Events</h2>
+        <h2 className="text-2xl font-bold mb-6">
+          Existing Events
+        </h2>
 
         <div className="space-y-4">
           {events.map((event) => (
             <div
               key={event._id}
-              className="bg-white shadow rounded-xl p-5 flex justify-between"
+              className="bg-white shadow rounded-xl p-5 flex justify-between gap-6"
             >
               <div>
                 {event.image && (
@@ -301,29 +356,53 @@ export default function EventsAdmin() {
                   />
                 )}
 
-                <h3 className="font-bold text-lg">{event.title}</h3>
+                <h3 className="font-bold text-lg">
+                  {event.title}
+                </h3>
 
-                <p>📅 {formatEventDate(event.date)}</p>
+                {/* IMPORTANT:
+                    No new Date() here.
+                */}
 
-                <p>📍 {event.location}</p>
+                <p>
+                  📅 {formatEventDate(event.date)}
+                </p>
 
-                <p>⏰ {formatTimeRange(event.startTime, event.endTime)}</p>
+                <p>
+                  📍 {event.location}
+                </p>
 
-                <p>🏷 {event.category}</p>
+                <p>
+                  ⏰{" "}
+                  {formatTimeRange(
+                    event.startTime,
+                    event.endTime
+                  )}
+                </p>
 
-                <p className="text-gray-600 mt-2">{event.description}</p>
+                <p>
+                  🏷 {event.category}
+                </p>
+
+                <p className="text-gray-600 mt-2">
+                  {event.description}
+                </p>
               </div>
 
               <div className="flex gap-2">
                 <button
-                  onClick={() => editEvent(event)}
+                  onClick={() =>
+                    editEvent(event)
+                  }
                   className="bg-blue-600 text-white px-4 py-2 rounded-lg"
                 >
                   Edit
                 </button>
 
                 <button
-                  onClick={() => deleteEvent(event._id)}
+                  onClick={() =>
+                    deleteEvent(event._id)
+                  }
                   className="bg-red-600 text-white px-4 py-2 rounded-lg"
                 >
                   Delete
@@ -336,3 +415,4 @@ export default function EventsAdmin() {
     </div>
   );
 }
+
