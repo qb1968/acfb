@@ -4,6 +4,20 @@ import { formatTimeRange } from "../../utils/timeFormat";
 
 const API = "https://acfb.onrender.com/api/events";
 
+const formatEventDate = (date) => {
+  if (!date) return "";
+
+  const dateOnly = date.substring(0, 10);
+
+  const [year, month, day] = dateOnly.split("-");
+
+  return new Date(
+    Number(year),
+    Number(month) - 1,
+    Number(day),
+  ).toLocaleDateString();
+};
+
 export default function EventsAdmin() {
   const [events, setEvents] = useState([]);
 
@@ -289,7 +303,7 @@ export default function EventsAdmin() {
 
                 <h3 className="font-bold text-lg">{event.title}</h3>
 
-                <p>📅 {new Date(event.date).toLocaleDateString()}</p>
+                <p>📅 {formatEventDate(event.date)}</p>
 
                 <p>📍 {event.location}</p>
 
