@@ -1,3 +1,4 @@
+
 import { useState } from "react";
 import { NavLink, Outlet, useNavigate } from "react-router-dom";
 
@@ -8,7 +9,6 @@ export default function AdminLayout() {
 
   const logout = () => {
     localStorage.removeItem("token");
-
     navigate("/admin/login");
   };
 
@@ -18,148 +18,129 @@ export default function AdminLayout() {
       path: "/admin",
       icon: "📊",
     },
-
     {
       name: "News",
       path: "/admin/news",
       icon: "📰",
     },
-
     {
       name: "Events",
       path: "/admin/events",
       icon: "📅",
     },
-
     {
       name: "Gallery",
       path: "/admin/gallery",
       icon: "📷",
     },
-
     {
       name: "Officers",
       path: "/admin/officers",
       icon: "👥",
     },
-
     {
       name: "Young Farmers",
       path: "/admin/young-farmers",
       icon: "🌱",
     },
-
     {
       name: "Young Farmer News",
       path: "/admin/young-farmer-news",
       icon: "📰",
     },
-
     {
       name: "Young Farmer Events",
       path: "/admin/young-farmer-events",
       icon: "📅",
     },
-
     {
       name: "Women Members",
       path: "/admin/women-members",
       icon: "👩‍🌾",
     },
-
     {
       name: "Women News",
       path: "/admin/women-news",
       icon: "📰",
     },
-
     {
       name: "Women Events",
       path: "/admin/women-events",
       icon: "📅",
     },
+    {
+      name: "Manage Admins",
+      path: "/admin/admin-management",
+      icon: "🔐",
+    },
   ];
 
   return (
-    <div className="min-h-screen bg-gray-100 flex">
+    <div className="min-h-screen bg-gray-100">
       {/* MOBILE OVERLAY */}
 
       {open && (
         <div
           className="
-fixed
-inset-0
-bg-black/50
-z-30
-md:hidden
-"
+            fixed
+            inset-0
+            bg-black/50
+            z-30
+            md:hidden
+          "
           onClick={() => setOpen(false)}
-        ></div>
+        />
       )}
 
       {/* SIDEBAR */}
 
       <aside
         className={`
-fixed
-md:static
-z-40
-top-0
-left-0
-h-full
-w-72
-bg-green-900
-text-white
-transform
-transition-transform
-duration-300
-
-${open ? "translate-x-0" : "-translate-x-full"}
-
-md:translate-x-0
-
-flex
-flex-col
-`}
+          fixed
+          z-40
+          top-0
+          left-0
+          h-screen
+          w-72
+          bg-green-900
+          text-white
+          flex
+          flex-col
+          transform
+          transition-transform
+          duration-300
+          ${open ? "translate-x-0" : "-translate-x-full"}
+          md:translate-x-0
+        `}
       >
-        {/* LOGO */}
+        {/* LOGO / HEADER */}
 
         <div
           className="
-p-6
-border-b
-border-white/20
-"
+            p-6
+            border-b
+            border-white/20
+            flex-shrink-0
+          "
         >
-          <h1
-            className="
-text-2xl
-font-bold
-"
-          >
+          <h1 className="text-xl font-bold">
             🌾 ACFB Admin
           </h1>
 
-          <p
-            className="
-text-sm
-text-green-200
-mt-1
-"
-          >
+          <p className="text-sm text-green-200 mt-1">
             Website Management
           </p>
         </div>
 
-        {/* NAV */}
+        {/* NAVIGATION */}
 
         <nav
           className="
-flex-1
-overflow-y-auto
-p-4
-space-y-2
-"
+            flex-1
+            overflow-y-auto
+            p-4
+            space-y-2
+          "
         >
           {links.map((link) => (
             <NavLink
@@ -169,23 +150,29 @@ space-y-2
               onClick={() => setOpen(false)}
               className={({ isActive }) =>
                 `
-
-flex
-items-center
-gap-3
-px-4
-py-3
-rounded-xl
-transition
-
-${isActive ? "bg-white text-green-900 font-bold" : "hover:bg-green-800"}
-
-`
+                  flex
+                  items-center
+                  gap-3
+                  px-4
+                  py-3
+                  rounded-xl
+                  transition
+                  duration-200
+                  ${
+                    isActive
+                      ? "bg-white text-green-900 font-bold shadow"
+                      : "text-white hover:bg-green-800"
+                  }
+                `
               }
             >
-              <span>{link.icon}</span>
+              <span className="text-xl">
+                {link.icon}
+              </span>
 
-              {link.name}
+              <span>
+                {link.name}
+              </span>
             </NavLink>
           ))}
         </nav>
@@ -194,23 +181,34 @@ ${isActive ? "bg-white text-green-900 font-bold" : "hover:bg-green-800"}
 
         <div
           className="
-p-4
-border-t
-border-white/20
-"
+            p-4
+            border-t
+            border-white/20
+            flex-shrink-0
+          "
         >
           <button
             onClick={logout}
             className="
-w-full
-bg-red-600
-hover:bg-red-700
-py-3
-rounded-xl
-font-semibold
-"
+              w-full
+              flex
+              items-center
+              gap-3
+              px-4
+              py-3
+              rounded-xl
+              text-left
+              hover:bg-red-600
+              transition
+            "
           >
-            🚪 Logout
+            <span className="text-xl">
+              🚪
+            </span>
+
+            <span>
+              Logout
+            </span>
           </button>
         </div>
       </aside>
@@ -219,48 +217,63 @@ font-semibold
 
       <div
         className="
-flex-1
-md:ml-0
-"
+          md:ml-72
+          min-h-screen
+        "
       >
         {/* HEADER */}
 
         <header
           className="
-bg-white
-shadow
-p-4
-flex
-items-center
-gap-4
-"
+            bg-white
+            shadow-sm
+            px-4
+            sm:px-6
+            py-4
+            flex
+            items-center
+            gap-4
+            sticky
+            top-0
+            z-20
+          "
         >
+          {/* MOBILE MENU BUTTON */}
+
           <button
             onClick={() => setOpen(true)}
             className="
-md:hidden
-text-2xl
-"
+              md:hidden
+              text-2xl
+              text-gray-700
+              hover:text-green-800
+              transition
+            "
+            aria-label="Open admin menu"
           >
             ☰
           </button>
 
+          {/* PAGE HEADER */}
+
           <div>
             <h2
               className="
-text-xl
-font-bold
-text-gray-800
-"
+                text-lg
+                sm:text-xl
+                font-bold
+                text-gray-800
+              "
             >
               Alamance County Farm Bureau
             </h2>
 
             <p
               className="
-text-sm
-text-gray-500
-"
+                text-xs
+                sm:text-sm
+                text-gray-500
+              "
             >
               Administration Panel
             </p>
@@ -271,8 +284,10 @@ text-gray-500
 
         <main
           className="
-p-6
-"
+            p-4
+            sm:p-6
+            lg:p-8
+          "
         >
           <Outlet />
         </main>
@@ -280,3 +295,4 @@ p-6
     </div>
   );
 }
+

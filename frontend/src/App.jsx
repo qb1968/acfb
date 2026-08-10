@@ -8,8 +8,6 @@ import AnnouncementBar from "./components/AnnouncementBar";
 import Navbar from "./components/Navbar";
 import Footer from "./components/Footer";
 
-/* PUBLIC */
-
 import Home from "./pages/Home";
 import About from "./pages/About";
 import Contact from "./pages/Contact";
@@ -23,6 +21,7 @@ import Women from "./pages/Women";
 
 /* ADMIN */
 
+import AdminManagement from "./admin/pages/AdminManagement";
 import Login from "./admin/pages/Login";
 import AdminLayout from "./admin/AdminLayout";
 import AdminDashboard from "./admin/pages/AdminDashboard";
@@ -40,25 +39,27 @@ import WomenNewsAdmin from "./admin/pages/WomenNewsAdmin";
 import WomenEventsAdmin from "./admin/pages/WomenEventsAdmin";
 
 import NewsAdmin from "./admin/pages/NewsAdmin";
+
 import PageTransition from "./components/PageTransition";
 import ProtectedRoute from "./admin/ProtectedRoute";
 
-/* SITE LAYOUT */
+/* PUBLIC PAGE LAYOUT */
 
-const Page = ({ children }) => (
-  <>
-    <AnnouncementBar />
+const Page = ({ children }) => {
+  return (
+    <>
+      <AnnouncementBar />
 
-    <Navbar />
+      <Navbar />
 
-    <main className="min-h-screen">
-      {" "}
-      <PageTransition>{children}</PageTransition>
-    </main>
+      <main className="min-h-screen">
+        <PageTransition>{children}</PageTransition>
+      </main>
 
-    <Footer />
-  </>
-);
+      <Footer />
+    </>
+  );
+};
 
 export default function App() {
   const [loading, setLoading] = useState(false);
@@ -72,7 +73,9 @@ export default function App() {
       {loading && <Loader />}
 
       <Routes>
-        {/* PUBLIC */}
+        {/* ========================================= */}
+        {/* PUBLIC ROUTES                            */}
+        {/* ========================================= */}
 
         <Route
           path="/"
@@ -164,11 +167,15 @@ export default function App() {
           }
         />
 
-        {/* ADMIN LOGIN */}
+        {/* ========================================= */}
+        {/* ADMIN LOGIN                              */}
+        {/* ========================================= */}
 
         <Route path="/admin/login" element={<Login />} />
 
-        {/* ADMIN AREA */}
+        {/* ========================================= */}
+        {/* ADMIN AREA                               */}
+        {/* ========================================= */}
 
         <Route
           path="/admin"
@@ -178,28 +185,54 @@ export default function App() {
             </ProtectedRoute>
           }
         >
+          {/* DASHBOARD */}
+
           <Route index element={<AdminDashboard />} />
 
-          <Route path="events" element={<EventsAdmin />} />
+          {/* ADMIN MANAGEMENT */}
 
-          <Route path="gallery" element={<GalleryAdmin />} />
+          <Route path="admin-management" element={<AdminManagement />} />
+
+          {/* NEWS */}
 
           <Route path="news" element={<NewsAdmin />} />
 
+          {/* EVENTS */}
+
+          <Route path="events" element={<EventsAdmin />} />
+
+          {/* GALLERY */}
+
+          <Route path="gallery" element={<GalleryAdmin />} />
+
+          {/* OFFICERS */}
+
           <Route path="officers" element={<OfficersAdmin />} />
+
+          {/* YOUNG FARMERS */}
 
           <Route path="young-farmers" element={<YoungFarmersAdmin />} />
 
+          {/* YOUNG FARMER NEWS */}
+
           <Route path="young-farmer-news" element={<YoungFarmerNewsAdmin />} />
+
+          {/* YOUNG FARMER EVENTS */}
 
           <Route
             path="young-farmer-events"
             element={<YoungFarmerEventsAdmin />}
           />
 
+          {/* WOMEN MEMBERS */}
+
           <Route path="women-members" element={<WomenMembersAdmin />} />
 
+          {/* WOMEN NEWS */}
+
           <Route path="women-news" element={<WomenNewsAdmin />} />
+
+          {/* WOMEN EVENTS */}
 
           <Route path="women-events" element={<WomenEventsAdmin />} />
         </Route>

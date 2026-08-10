@@ -14,7 +14,7 @@ export default function Login() {
 
     if (res.token) {
       localStorage.setItem("token", res.token);
-      navigate("/admin/events");
+      navigate("/admin");
     } else {
       alert("Login failed");
     }

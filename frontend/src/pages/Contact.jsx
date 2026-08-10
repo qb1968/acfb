@@ -27,10 +27,9 @@ export default function Contact() {
               href="tel:3362262477"
               className="mt-3 block text-lg text-gray-700 hover:text-primary"
             >
-              (336) 226-2477
+              (336) 584-9299
             </a>
-            <p className="text-gray-700 font-bold mt-2">Spring Gates
-            </p>
+            <p className="text-gray-700 font-bold mt-2">Spring Gates</p>
             <p className="text-gray-500 mt-2">Monday–Friday</p>
           </div>
 
@@ -76,9 +75,9 @@ export default function Contact() {
                 <h4 className="font-bold text-lg">Address</h4>
 
                 <p className="text-gray-700">
-                  800 N. Main Street
+                  3047 S. Church Street
                   <br />
-                  Graham, NC 27253
+                  Burlington, NC 27215
                 </p>
               </div>
 
@@ -89,14 +88,8 @@ export default function Contact() {
                   href="tel:3362262477"
                   className="text-primary hover:underline"
                 >
-                  (336) 226-2477
+                  (336) 584-9299
                 </a>
-              </div>
-
-              <div>
-                <h4 className="font-bold text-lg">Fax</h4>
-
-                <p>(336) 226-4945</p>
               </div>
 
               <div>
@@ -117,7 +110,7 @@ export default function Contact() {
           <div className="rounded-2xl overflow-hidden shadow-lg h-[420px]">
             <iframe
               title="Farm Bureau Office"
-              src="https://www.google.com/maps?q=800+N+Main+Street+Graham+NC&output=embed"
+              src="https://www.google.com/maps?q=3047+S+Church+Street+Burlington+NC&output=embed"
               className="w-full h-full border-0"
               loading="lazy"
             />
@@ -207,43 +200,66 @@ export default function Contact() {
           <h2 className="text-3xl font-bold text-primary mb-8 text-center">
             Send Us a Message
           </h2>
-
-          <form className="grid md:grid-cols-2 gap-5">
+          <form
+            action="https://submit-form.com/7s7bKOJSS"
+            method="POST"
+            className="grid md:grid-cols-2 gap-5"
+          >
+            {/* Redirect after successful submission */}{" "}
+            <input
+              type="hidden"
+              name="_redirect"
+              value="http://localhost:5173/contact"
+            />{" "}
+            {/* Name */}{" "}
             <input
               type="text"
+              name="name"
               placeholder="Full Name"
-              className="border rounded-xl px-4 py-3"
-            />
-
+              required
+              className=" border rounded-xl px-4 py-3 focus:outline-none focus:ring-2 focus:ring-green-600 "
+            />{" "}
+            {/* Email */}{" "}
             <input
               type="email"
+              name="email"
               placeholder="Email"
-              className="border rounded-xl px-4 py-3"
-            />
-
+              required
+              className=" border rounded-xl px-4 py-3 focus:outline-none focus:ring-2 focus:ring-green-600 "
+            />{" "}
+            {/* Phone */}{" "}
             <input
               type="tel"
+              name="phone"
               placeholder="Phone Number"
-              className="border rounded-xl px-4 py-3"
-            />
-
+              className=" border rounded-xl px-4 py-3 focus:outline-none focus:ring-2 focus:ring-green-600 "
+            />{" "}
+            {/* Subject */}{" "}
             <input
               type="text"
+              name="subject"
               placeholder="Subject"
-              className="border rounded-xl px-4 py-3"
-            />
-
+              required
+              className=" border rounded-xl px-4 py-3 focus:outline-none focus:ring-2 focus:ring-green-600 "
+            />{" "}
+            {/* Message */}{" "}
             <textarea
+              name="message"
               rows="6"
               placeholder="Message"
-              className="md:col-span-2 border rounded-xl px-4 py-3"
-            />
-
-            <button className="md:col-span-2 bg-primary text-white py-4 rounded-xl font-semibold hover:bg-green-800 transition">
-              Send Message
-            </button>
-          </form>
-        </div>
+              required
+              className=" md:col-span-2 border rounded-xl px-4 py-3 focus:outline-none focus:ring-2 focus:ring-green-600 "
+            />{" "}
+            {/* Submit */}{" "}
+            <button
+              type="submit"
+              className=" md:col-span-2 bg-primary text-white py-4 rounded-xl font-semibold hover:bg-green-800 transition "
+            >
+              {" "}
+              Send Message{" "}
+            </button>{" "}
+          </form>{" "}
+        </div>{" "}
       </section>
     </div>
   );

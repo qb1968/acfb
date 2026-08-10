@@ -18,40 +18,30 @@ export default function AdminDashboard() {
     loadStats();
   }, []);
 
- const loadStats = async () => {
-   try {
-     const [news, events, officers, gallery, youngFarmers, women] =
-       await Promise.all([
-         axios.get(`${API}/news`),
+  const loadStats = async () => {
+    try {
+      const [news, events, officers, gallery, youngFarmers, women] =
+        await Promise.all([
+          axios.get(`${API}/news`),
+          axios.get(`${API}/events`),
+          axios.get(`${API}/officers`),
+          axios.get(`${API}/gallery`),
+          axios.get(`${API}/young-farmers`),
+          axios.get(`${API}/women-members`),
+        ]);
 
-         axios.get(`${API}/events`),
-
-         axios.get(`${API}/officers`),
-
-         axios.get(`${API}/gallery`),
-
-         axios.get(`${API}/young-farmers`),
-
-         axios.get(`${API}/women-members`),
-       ]);
-
-     setStats({
-       news: news.data.length,
-
-       events: events.data.length,
-
-       officers: officers.data.length,
-
-       gallery: gallery.data.length,
-
-       youngFarmers: youngFarmers.data.length,
-
-       women: women.data.length,
-     });
-   } catch (err) {
-     console.log("Dashboard Error:", err.response?.data || err.message);
-   }
- };
+      setStats({
+        news: news.data.length,
+        events: events.data.length,
+        officers: officers.data.length,
+        gallery: gallery.data.length,
+        youngFarmers: youngFarmers.data.length,
+        women: women.data.length,
+      });
+    } catch (err) {
+      console.error("Dashboard Error:", err.response?.data || err.message);
+    }
+  };
 
   const cards = [
     {
@@ -104,159 +94,260 @@ export default function AdminDashboard() {
   ];
 
   return (
-    <div
-      className="
-p-6
-bg-gray-50
-min-h-screen
-"
-    >
-      <h1
-        className="
-text-4xl
-font-bold
-text-gray-800
-mb-2
-"
-      >
-        Farm Bureau Dashboard
-      </h1>
+    <div className="p-4 sm:p-6 lg:p-8">
+      {/* HEADER */}
 
-      <p
-        className="
-text-gray-600
-mb-10
-"
-      >
-        Manage your website content and programs.
-      </p>
+      <div className="mb-10">
+        <h1
+          className="
+          text-3xl
+          sm:text-4xl
+          font-bold
+          text-gray-800
+        "
+        >
+          Farm Bureau Dashboard
+        </h1>
+
+        <p
+          className="
+          text-gray-600
+          mt-2
+        "
+        >
+          Manage your website content and programs.
+        </p>
+      </div>
+
+      {/* STAT CARDS */}
 
       <div
         className="
-grid
-sm:grid-cols-2
-lg:grid-cols-3
-gap-6
-"
+        grid
+        sm:grid-cols-2
+        lg:grid-cols-3
+        gap-6
+      "
       >
         {cards.map((card) => (
-          <Link key={card.title} to={card.link}>
-            <div
-              className={`
-${card.color}
-text-white
-rounded-3xl
-p-6
-shadow-xl
-hover:-translate-y-2
-transition
-duration-300
-`}
+          <Link
+            key={card.title}
+            to={card.link}
+            className={`
+              ${card.color}
+              text-white
+              rounded-3xl
+              p-6
+              shadow-xl
+              hover:-translate-y-2
+              hover:shadow-2xl
+              transition
+              duration-300
+              block
+            `}
+          >
+            <div className="text-4xl">{card.icon}</div>
+
+            <h2
+              className="
+              text-xl
+              font-bold
+              mt-4
+            "
             >
-              <div
-                className="
-text-4xl
-mb-4
-"
-              >
-                {card.icon}
-              </div>
+              {card.title}
+            </h2>
 
-              <h2
-                className="
-text-xl
-font-bold
-"
-              >
-                {card.title}
-              </h2>
+            <p
+              className="
+              text-5xl
+              font-bold
+              mt-3
+            "
+            >
+              {card.count}
+            </p>
 
-              <p
-                className="
-text-5xl
-font-bold
-mt-3
-"
-              >
-                {card.count}
-              </p>
-
-              <p
-                className="
-mt-3
-opacity-90
-"
-              >
-                Manage →
-              </p>
-            </div>
+            <p
+              className="
+              mt-3
+              opacity-90
+            "
+            >
+              Manage →
+            </p>
           </Link>
         ))}
       </div>
 
+      {/* QUICK ACTIONS */}
+
       <div
         className="
-mt-12
-bg-white
-rounded-3xl
-shadow
-p-8
-"
+        mt-12
+        bg-white
+        rounded-3xl
+        shadow-lg
+        p-6
+        sm:p-8
+      "
       >
         <h2
           className="
-text-2xl
-font-bold
-mb-6
-"
+          text-2xl
+          font-bold
+          text-gray-800
+          mb-6
+        "
         >
           Quick Actions
         </h2>
 
         <div
           className="
-flex
-flex-wrap
-gap-4
-"
+          grid
+          sm:grid-cols-2
+          lg:grid-cols-4
+          gap-4
+        "
         >
+          {/* ADD NEWS */}
+
           <Link
             to="/admin/news"
             className="
-bg-primary
-text-white
-px-6
-py-3
-rounded-xl
-"
+              bg-green-700
+              hover:bg-green-800
+              text-white
+              px-6
+              py-3
+              rounded-xl
+              font-semibold
+              text-center
+              transition
+            "
           >
             + Add News
           </Link>
 
+          {/* ADD EVENT */}
+
           <Link
             to="/admin/events"
             className="
-bg-primary
-text-white
-px-6
-py-3
-rounded-xl
-"
+              bg-blue-700
+              hover:bg-blue-800
+              text-white
+              px-6
+              py-3
+              rounded-xl
+              font-semibold
+              text-center
+              transition
+            "
           >
             + Add Event
           </Link>
 
+          {/* UPLOAD PHOTO */}
+
           <Link
             to="/admin/gallery"
             className="
-bg-primary
-text-white
-px-6
-py-3
-rounded-xl
-"
+              bg-purple-700
+              hover:bg-purple-800
+              text-white
+              px-6
+              py-3
+              rounded-xl
+              font-semibold
+              text-center
+              transition
+            "
           >
             + Upload Photo
+          </Link>
+
+          {/* CREATE ADMIN */}
+
+          <Link
+            to="/admin/admin-management"
+            className="
+              bg-gray-800
+              hover:bg-gray-900
+              text-white
+              px-6
+              py-3
+              rounded-xl
+              font-semibold
+              text-center
+              transition
+            "
+          >
+            + Create Admin
+          </Link>
+        </div>
+      </div>
+
+      {/* ADMIN MANAGEMENT NOTICE */}
+
+      <div
+        className="
+        mt-8
+        bg-green-50
+        border
+        border-green-200
+        rounded-2xl
+        p-6
+      "
+      >
+        <div
+          className="
+          flex
+          flex-col
+          sm:flex-row
+          sm:items-center
+          sm:justify-between
+          gap-4
+        "
+        >
+          <div>
+            <h3
+              className="
+              text-lg
+              font-bold
+              text-green-800
+            "
+            >
+              Administrator Accounts
+            </h3>
+
+            <p
+              className="
+              text-green-700
+              mt-1
+            "
+            >
+              Create and manage administrator access to the website.
+            </p>
+          </div>
+
+          <Link
+            to="/admin/admin-management"
+            className="
+              inline-flex
+              justify-center
+              bg-green-700
+              hover:bg-green-800
+              text-white
+              px-5
+              py-3
+              rounded-xl
+              font-semibold
+              transition
+            "
+          >
+            Manage Admins
           </Link>
         </div>
       </div>
