@@ -153,7 +153,7 @@ export default function Footer() {
           <div className="space-y-4 text-sm">
             <p className="flex gap-3 items-center">
               <FaPhone className="text-green-400" />
-              (336) 555-0000
+              (336) 584-9299
             </p>
 
             <p className="flex gap-3 items-center">

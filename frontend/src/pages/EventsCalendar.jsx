@@ -324,50 +324,53 @@ export default function EventsCalendar() {
   // FULLCALENDAR EVENTS
   // --------------------------------------------------
 
-  const calendarEvents = events
-    .filter((event) => event.date)
-    .map((event) => {
-      const dateOnly =
-        getDateOnly(event.date);
+  
+// --------------------------------------------------
+// FULLCALENDAR EVENTS
+// --------------------------------------------------
 
-      const startTime =
-        event.startTime || "00:00";
+const calendarEvents = events
+  .filter((event) => {
+    const date = getDateOnly(event.date);
 
-      return {
-        id: event._id,
+    // Only allow proper YYYY-MM-DD dates
+    return /^\d{4}-\d{2}-\d{2}$/.test(date);
+  })
+  .map((event) => {
+    const dateOnly = getDateOnly(event.date);
+    const startTime = event.startTime || "00:00";
 
-        title: event.title,
+    return {
+      id: event._id,
+      title: event.title,
 
-        // IMPORTANT:
-        // This is a local date/time string.
-        // No UTC conversion.
-        start: formatCalendarDateTime(
-          dateOnly,
-          startTime
-        ),
+      // Keep date/time as a local calendar value.
+      start: `${dateOnly}T${startTime}:00`,
 
-        extendedProps: {
-          eventDate: dateOnly,
-          description: event.description,
-          location: event.location,
-          startTime: event.startTime,
-          endTime: event.endTime,
-          category: event.category,
-          image: event.image,
-        },
+      extendedProps: {
+        eventDate: dateOnly,
+        description: event.description || "",
+        location: event.location || "",
+        startTime: event.startTime || "",
+        endTime: event.endTime || "",
+        category: event.category || "Community Event",
+        image: event.image || "",
+      },
 
-        backgroundColor:
-          event.category === "Meeting"
-            ? "#2563eb"
-            : event.category === "Youth Program"
-              ? "#16a34a"
-              : event.category === "Training"
-                ? "#f97316"
-                : "#7c3aed",
+      backgroundColor:
+        event.category === "Meeting"
+          ? "#2563eb"
+          : event.category === "Youth Program"
+            ? "#16a34a"
+            : event.category === "Training"
+              ? "#f97316"
+              : "#7c3aed",
 
-        borderColor: "transparent",
-      };
-    });
+      borderColor: "transparent",
+    };
+  });
+
+
 
   // --------------------------------------------------
   // EVENT CLICK
