@@ -4,7 +4,9 @@ import { upload } from "../middleware/upload.js";
 
 const router = express.Router();
 
+// --------------------------------------------------
 // GET WOMEN EVENTS
+// --------------------------------------------------
 
 router.get("/", async (req, res) => {
   try {
@@ -14,105 +16,129 @@ router.get("/", async (req, res) => {
 
     res.json(events);
   } catch (err) {
+    console.error("Women events GET error:", err);
+
     res.status(500).json({
       message: err.message,
     });
   }
 });
 
-// CREATE WOMEN EVENT WITH IMAGE
+// --------------------------------------------------
+// CREATE WOMEN EVENT
+// --------------------------------------------------
 
-router.post(
-  "/",
-  upload.single("image"),
+router.post("/", upload.single("image"), async (req, res) => {
+  try {
+    const event = new WomenEvent({
+      title: req.body.title || "",
 
-  async (req, res) => {
-    try {
-      const event = new WomenEvent({
-        title: req.body.title,
+      description: req.body.description || "",
 
-        date: req.body.date,
+      // IMPORTANT:
+      // Save exactly YYYY-MM-DD.
+      date: String(req.body.date || "").substring(0, 10),
 
-        location: req.body.location,
+      startTime: req.body.startTime || "",
 
-        description: req.body.description,
+      endTime: req.body.endTime || "",
 
-        // CLOUDINARY IMAGE URL
+      location: req.body.location || "",
 
-        image: req.file ? req.file.path : "",
-      });
+      category: req.body.category || "Meeting",
 
-      await event.save();
+      image: req.file ? req.file.path : "",
+    });
 
-      res.json(event);
-    } catch (err) {
-      res.status(500).json({
-        message: err.message,
-      });
-    }
-  },
-);
+    await event.save();
 
+    res.status(201).json(event);
+  } catch (err) {
+    console.error("Women event CREATE error:", err);
+
+    res.status(500).json({
+      message: err.message,
+    });
+  }
+});
+
+// --------------------------------------------------
 // UPDATE WOMEN EVENT
+// --------------------------------------------------
 
-router.put(
-  "/:id",
+router.put("/:id", upload.single("image"), async (req, res) => {
+  try {
+    const updateData = {
+      title: req.body.title || "",
 
-  upload.single("image"),
+      description: req.body.description || "",
 
-  async (req, res) => {
-    try {
-      const updateData = {
-        title: req.body.title,
+      // IMPORTANT:
+      // Save exactly YYYY-MM-DD.
+      date: String(req.body.date || "").substring(0, 10),
 
-        date: req.body.date,
+      startTime: req.body.startTime || "",
 
-        location: req.body.location,
+      endTime: req.body.endTime || "",
 
-        description: req.body.description,
-      };
+      location: req.body.location || "",
 
-      if (req.file) {
-        updateData.image = req.file.path;
-      }
+      category: req.body.category || "Meeting",
+    };
 
-      const updated = await WomenEvent.findByIdAndUpdate(
-        req.params.id,
+    if (req.file) {
+      updateData.image = req.file.path;
+    }
 
-        updateData,
+    const updated = await WomenEvent.findByIdAndUpdate(
+      req.params.id,
+      updateData,
+      {
+        new: true,
+        runValidators: true,
+      },
+    );
 
-        {
-          new: true,
-        },
-      );
-
-      res.json(updated);
-    } catch (err) {
-      res.status(500).json({
-        message: err.message,
+    if (!updated) {
+      return res.status(404).json({
+        message: "Women event not found",
       });
     }
-  },
-);
 
+    res.json(updated);
+  } catch (err) {
+    console.error("Women event UPDATE error:", err);
+
+    res.status(500).json({
+      message: err.message,
+    });
+  }
+});
+
+// --------------------------------------------------
 // DELETE WOMEN EVENT
+// --------------------------------------------------
 
-router.delete(
-  "/:id",
+router.delete("/:id", async (req, res) => {
+  try {
+    const deleted = await WomenEvent.findByIdAndDelete(req.params.id);
 
-  async (req, res) => {
-    try {
-      await WomenEvent.findByIdAndDelete(req.params.id);
-
-      res.json({
-        message: "Women event deleted",
-      });
-    } catch (err) {
-      res.status(500).json({
-        message: err.message,
+    if (!deleted) {
+      return res.status(404).json({
+        message: "Women event not found",
       });
     }
-  },
-);
+
+    res.json({
+      message: "Women event deleted",
+    });
+  } catch (err) {
+    console.error("Women event DELETE error:", err);
+
+    res.status(500).json({
+      message: err.message,
+    });
+  }
+});
 
 export default router;
