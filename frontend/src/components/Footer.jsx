@@ -202,17 +202,35 @@ export default function Footer() {
 
       {/* BOTTOM BAR */}
 
+      {/* BOTTOM BAR */}
+
       <div
         className="
-          border-t
-          border-white/10
-          py-5
-          text-center
-          text-sm
-        "
+    border-t
+    border-white/10
+    py-5
+    text-center
+    text-sm
+  "
       >
-        © {new Date().getFullYear()} Alamance County Farm Bureau. All Rights
-        Reserved.
+        <p>
+          © {new Date().getFullYear()} Alamance County Farm Bureau. All Rights
+          Reserved.
+        </p>
+
+        {/* WEBSITE CREDIT */}
+
+        <p className="text-xs text-gray-400 mt-2">
+          Website Design &amp; Development by{" "}
+          <a
+            href="https://allwebcon.com"
+            target="_blank"
+            rel="noopener noreferrer"
+            className="text-white font-semibold hover:text-orange-400 transition"
+          >
+            Allison Web Consultants
+          </a>
+        </p>
       </div>
     </footer>
   );
