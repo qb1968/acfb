@@ -7,7 +7,11 @@ const womenEventSchema = new mongoose.Schema(
       required: true,
     },
 
-    date: Date,
+    // Calendar date — NOT a timestamp
+    date: {
+      type: String,
+      required: true,
+    },
 
     location: String,
 
